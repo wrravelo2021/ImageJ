@@ -201,7 +201,7 @@ public class CompositeImage extends ImagePlus {
 	}
 
 	public synchronized void updateImage() {
-		int imageSize = width*height;
+		int imageSize = widthData*height;
 		int nChannels = getNChannels();
 		int redValue, greenValue, blueValue;
 		int ch = getChannel();
@@ -228,7 +228,7 @@ public class CompositeImage extends ImagePlus {
 				}
 				if (!IJ.isMacro()) ContrastAdjuster.update();
 				for (int i=0; i<MAX_CHANNELS; i++)
-					active[i] = i==currentChannel?true:false;
+					active[i] = i==currentChannel;
 				Channels.updateChannels();
 			}
 			if (ip!=null)
@@ -245,7 +245,7 @@ public class CompositeImage extends ImagePlus {
 			return;
 		}
 	
-		if (cip==null||cip[0].getWidth()!=width||cip[0].getHeight()!=height||getBitDepth()!=bitDepth) {
+		if (cip==null||cip[0].getWidth()!=widthData||cip[0].getHeight()!=height||getBitDepth()!=bitDepth) {
 			setup(nChannels, getImageStack());
 			rgbPixels = null;
 			rgbSampleModel = null;
@@ -413,13 +413,13 @@ public class CompositeImage extends ImagePlus {
 	void createImage() {
 		if (imageSource==null) {
 			rgbCM = new DirectColorModel(32, 0xff0000, 0xff00, 0xff);
-			imageSource = new MemoryImageSource(width, height, rgbCM, rgbPixels, 0, width);
+			imageSource = new MemoryImageSource(widthData, height, rgbCM, rgbPixels, 0, widthData);
 			imageSource.setAnimated(true);
 			imageSource.setFullBufferUpdates(true);
 			awtImage = Toolkit.getDefaultToolkit().createImage(imageSource);
 			newPixels = false;
 		} else if (newPixels){
-			imageSource.newPixels(rgbPixels, rgbCM, 0, width);
+			imageSource.newPixels(rgbPixels, rgbCM, 0, widthData);
 			newPixels = false;
 		} else
 			imageSource.newPixels();	
@@ -429,7 +429,7 @@ public class CompositeImage extends ImagePlus {
 		if (rgbSampleModel==null)
 			rgbSampleModel = getRGBSampleModel();
 		if (rgbRaster==null) {
-			DataBuffer dataBuffer = new DataBufferInt(rgbPixels, width*height, 0);
+			DataBuffer dataBuffer = new DataBufferInt(rgbPixels, widthData*height, 0);
 			rgbRaster = Raster.createWritableRaster(rgbSampleModel, dataBuffer, null);
 		}
 		if (rgbImage==null)
@@ -441,7 +441,7 @@ public class CompositeImage extends ImagePlus {
 		rgbCM = new DirectColorModel(24, 0xff0000, 0xff00, 0xff);
 		WritableRaster wr = rgbCM.createCompatibleWritableRaster(1, 1);
 		SampleModel sampleModel = wr.getSampleModel();
-		sampleModel = sampleModel.createCompatibleSampleModel(width, height);
+		sampleModel = sampleModel.createCompatibleSampleModel(widthData, height);
 		return sampleModel;
 	}
 

@@ -17,7 +17,7 @@ import java.net.URL;
 public class HTMLDialog extends JDialog implements ActionListener, KeyListener, HyperlinkListener, WindowListener {
 	private boolean escapePressed;
 	private JEditorPane editorPane;
-	private boolean modal = true;
+	private boolean htmlModal = true;
 
 	public HTMLDialog(String title, String message) {
 		super(ij.IJ.getInstance(), title, true);
@@ -31,7 +31,7 @@ public class HTMLDialog extends JDialog implements ActionListener, KeyListener, 
 
 	public HTMLDialog(String title, String message, boolean modal) {
 		super(ij.IJ.getInstance(), title, modal);
-		this.modal = modal;
+		this.htmlModal = modal;
 		init(message);
 	}
 	
@@ -78,7 +78,7 @@ public class HTMLDialog extends JDialog implements ActionListener, KeyListener, 
 			dialogD.height = (int)(0.80*screenD.height);
 		setSize(dialogD);
 		GUI.centerOnImageJScreen(this);		
-		if (!modal) {
+		if (!htmlModal) {
 			WindowManager.addWindow(this);
 			show();
 		}
@@ -90,7 +90,7 @@ public class HTMLDialog extends JDialog implements ActionListener, KeyListener, 
 				}
 			});
 		}
-		if (modal) show();
+		if (htmlModal) show();
 		Java2.setLookAndFeel(saveLookAndFeel);
 	}
 
@@ -137,7 +137,7 @@ public class HTMLDialog extends JDialog implements ActionListener, KeyListener, 
 
 	public void dispose() {
 		super.dispose();
-		if (!modal) WindowManager.removeWindow(this);
+		if (!htmlModal) WindowManager.removeWindow(this);
 	}
 	
 	public void windowClosing(WindowEvent e) {

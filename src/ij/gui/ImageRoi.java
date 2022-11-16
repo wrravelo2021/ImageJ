@@ -10,7 +10,7 @@ import java.awt.image.*;
 */
 public class ImageRoi extends Roi {
 	private Image img;
-	private Composite composite;
+	private Composite imageRoiComposite;
 	private double opacity = 1.0;
 	private double angle = 0.0;
 	private boolean zeroTransparent;
@@ -37,9 +37,9 @@ public class ImageRoi extends Roi {
 		int sx2 = screenX(x+width);
 		int sy2 = screenY(y+height);
 		Composite saveComposite = null;
-		if (composite!=null) {
+		if (imageRoiComposite!=null) {
 			saveComposite = g2d.getComposite();
-			g2d.setComposite(composite);
+			g2d.setComposite(imageRoiComposite);
 		}
 		Image img2 = img;
 		if (angle!=0.0) {
@@ -52,14 +52,14 @@ public class ImageRoi extends Roi {
 			img2 = ip.createImage();
 		}
 		g.drawImage(img2, screenX(x), screenY(y), sx2, sy2, 0, 0, img.getWidth(null), img.getHeight(null), null);
-		if (composite!=null) g2d.setComposite(saveComposite);
+		if (imageRoiComposite!=null) g2d.setComposite(saveComposite);
 		if (isActiveOverlayRoi() && !overlay)
 			super.draw(g);
  	}
  	 	
 	/** Sets the composite mode. */
 	public void setComposite(Composite composite) {
-		this.composite = composite;
+		this.imageRoiComposite = composite;
 	}
 	
 	/** Sets the composite mode using the specified opacity (alpha), in the 
@@ -69,9 +69,9 @@ public class ImageRoi extends Roi {
 		if (opacity>1.0) opacity = 1.0;
 		this.opacity = opacity;
 		if (opacity!=1.0)
-			composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)opacity);
+			imageRoiComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)opacity);
 		else
-			composite = null;
+			imageRoiComposite = null;
 	}
 	
 	/** Returns a serialized version of the image. */

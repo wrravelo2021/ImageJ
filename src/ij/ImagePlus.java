@@ -57,7 +57,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	protected int currentSlice; // current stack index (one-based)
 	protected static final int OPENED=0, CLOSED=1, UPDATED=2, SAVED=3;
 	protected boolean compositeImage;
-	protected int width;
+	protected int widthData;
 	protected int height;
 	protected boolean locked;
 	private int lockedCount;
@@ -496,7 +496,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		if (Prefs.useInvertingLut && getBitDepth()==8 && ip!=null && !ip.isInvertedLut()&& !ip.isColorLut())
 			invertLookupTable();
 		img = getImage();
-		if ((img!=null) && (width>=0) && (height>=0)) {
+		if ((img!=null) && (widthData>=0) && (height>=0)) {
 			activated = false;
 			int stackSize = getStackSize();
 			if (stackSize>1)
@@ -642,8 +642,8 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			throw new IllegalStateException ("Error loading image");
 		int newWidth = image.getWidth(ij);
 		int newHeight = image.getHeight(ij);
-		boolean dimensionsChanged = newWidth!=width || newHeight!=height;
-		width = newWidth;
+		boolean dimensionsChanged = newWidth!=widthData || newHeight!=height;
+		widthData = newWidth;
 		height = newHeight;
 		setStackNull();
 		LookUpTable lut = new LookUpTable(image);
@@ -746,7 +746,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		if (ip==null || ip.getPixels()==null)
 			throw new IllegalArgumentException("ip null or ip.getPixels() null");
 		if (getStackSize()>1) {
-			if (ip.getWidth()!=width || ip.getHeight()!=height)
+			if (ip.getWidth()!=widthData || ip.getHeight()!=height)
 				throw new IllegalArgumentException("Wrong dimensions for this stack");
 			int stackBitDepth = stack!=null?stack.getBitDepth():0;
 			if (stackBitDepth>0 && getBitDepth()!=stackBitDepth)
@@ -768,7 +768,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		if (ij!=null)
 			ip.setProgressBar(ij.getProgressBar());
 		int stackSize = 1;
-		boolean dimensionsChanged = width>0 && height>0 && (width!=ip.getWidth() || height!=ip.getHeight());
+		boolean dimensionsChanged = widthData>0 && height>0 && (widthData!=ip.getWidth() || height!=ip.getHeight());
 		if (stack!=null) {
 			stackSize = stack.size();
 			if (currentSlice>stackSize)
@@ -787,11 +787,11 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			type = GRAY16;
 		else
 			type = GRAY32;
-		if (width==0)
+		if (widthData==0)
 			imageType = type;
 		else
 			setType(type);
-		width = ip.getWidth();
+		widthData = ip.getWidth();
 		height = ip.getHeight();
 		if (win!=null) {
 			if (dimensionsChanged && stackSize==1)
@@ -832,7 +832,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
     	boolean resetCurrentSlice = currentSlice>newStackSize;
     	if (resetCurrentSlice) setCurrentSlice(newStackSize);
     	ImageProcessor ip = newStack.getProcessor(currentSlice);
-    	boolean dimensionsChanged = width>0 && height>0 && (width!=ip.getWidth()||height!=ip.getHeight());
+    	boolean dimensionsChanged = widthData>0 && height>0 && (widthData!=ip.getWidth()||height!=ip.getHeight());
     	if (this.stack==null)
     	    newStack.viewers(+1);
     	this.stack = newStack;
@@ -1200,7 +1200,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 
     /** Returns the width of this image in pixels. */
     public int getWidth() {
-    	return width;
+    	return widthData;
     }
 
     /** Returns the height of this image in pixels. */
@@ -1326,7 +1326,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		if (varify)
 			verifyDimensions();
 		int[] d = new int[5];
-		d[0] = width;
+		d[0] = widthData;
 		d[1] = height;
 		d[2] = nChannels;
 		d[3] = nSlices;
@@ -1716,7 +1716,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 				else {
 					int[] pixels32 = new int[1];
 					if (img==null) return pvalue;
-					PixelGrabber pg = new PixelGrabber(img, x, y, 1, 1, pixels32, 0, width);
+					PixelGrabber pg = new PixelGrabber(img, x, y, 1, 1, pixels32, 0, widthData);
 					try {pg.grabPixels();}
 					catch (InterruptedException e) {return pvalue;};
 					c = pixels32[0];
@@ -1743,7 +1743,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			cm = ip.getColorModel();
 		else
 			cm = createLut().getColorModel();
-		return new ImageStack(width, height, cm);
+		return new ImageStack(widthData, height, cm);
 	}
 
 	/** Returns the image stack. The stack may have only
@@ -2237,12 +2237,12 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		if (previousRoi!=null) {
 			Roi pRoi = previousRoi;
 			Rectangle r = pRoi.getBounds();
-			if (r.width<=width||r.height<=height||(r.x<width&&r.y<height)||isSmaller(pRoi)) { // will it (mostly) fit in this image?
+			if (r.width<=widthData||r.height<=height||(r.x<widthData&&r.y<height)||isSmaller(pRoi)) { // will it (mostly) fit in this image?
 				roi = (Roi)pRoi.clone();
 				roi.setImage(this);
-				if (r.x>=width || r.y>=height || (r.x+r.width)<0 || (r.y+r.height)<0) // does it need to be moved?
-					roi.setLocation((width-r.width)/2, (height-r.height)/2);
-				else if (r.width==width && r.height==height) // is it the same size as the image
+				if (r.x>=widthData || r.y>=height || (r.x+r.width)<0 || (r.y+r.height)<0) // does it need to be moved?
+					roi.setLocation((widthData-r.width)/2, (height-r.height)/2);
+				else if (r.width==widthData && r.height==height) // is it the same size as the image
 					roi.setLocation(0, 0);
 				draw();
 				roi.notifyListeners(RoiListener.MODIFIED);
@@ -2255,7 +2255,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		if (mask==null) return false;
 		mask.setThreshold(255, 255, ImageProcessor.NO_LUT_UPDATE);
 		ImageStatistics stats = ImageStatistics.getStatistics(mask, MEAN+LIMIT, null);
-		return stats.area<=width*height;
+		return stats.area<=widthData*height;
 	}
 
 	/** Implements the File/Revert command. */
@@ -2347,7 +2347,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	*/
     public FileInfo getFileInfo() {
     	FileInfo fi = new FileInfo();
-    	fi.width = width;
+    	fi.width = widthData;
     	fi.height = height;
     	fi.nImages = getStackSize();
     	if (compositeImage)
@@ -2429,7 +2429,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
     public FileInfo getOriginalFileInfo() {
     	if (fileInfo==null && url!=null) {
     		fileInfo = new FileInfo();
-    		fileInfo.width = width;
+    		fileInfo.width = widthData;
     		fileInfo.height = height;
     		fileInfo.url = url;
     		fileInfo.directory = null;
@@ -2636,13 +2636,13 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
  	/** This method has been replaced by IJ.createHyperStack(). */
 	public ImagePlus createHyperStack(String title, int channels, int slices, int frames, int bitDepth) {
 		int size = channels*slices*frames;
-		ImageStack stack2 = new ImageStack(width, height, size); // create empty stack
+		ImageStack stack2 = new ImageStack(widthData, height, size); // create empty stack
 		ImageProcessor ip2 = null;
 		switch (bitDepth) {
-			case 8: ip2 = new ByteProcessor(width, height); break;
-			case 16: ip2 = new ShortProcessor(width, height); break;
-			case 24: ip2 = new ColorProcessor(width, height); break;
-			case 32: ip2 = new FloatProcessor(width, height); break;
+			case 8: ip2 = new ByteProcessor(widthData, height); break;
+			case 16: ip2 = new ShortProcessor(widthData, height); break;
+			case 24: ip2 = new ColorProcessor(widthData, height); break;
+			case 32: ip2 = new FloatProcessor(widthData, height); break;
 			default: throw new IllegalArgumentException("Invalid bit depth");
 		}
 		stack2.setPixels(ip2.getPixels(), 1); // can't create ImagePlus will null 1st image
@@ -2769,7 +2769,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	}
 
 	String getFFTLocation(int x, int y, Calibration cal) {
-		double center = width/2.0;
+		double center = widthData/2.0;
 		double r = Math.sqrt((x-center)*(x-center) + (y-center)*(y-center));
 		double theta = Math.atan2(y-center, x-center);
 		theta = theta*180.0/Math.PI;
@@ -2778,9 +2778,9 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		if (r<1.0)
 			return s+"Infinity/c (0)"; //origin ('DC offset'), no angle
 		else if (cal.scaled())
-			s += IJ.d2s((width/r)*cal.pixelWidth,2) + " " + cal.getUnit() + "/c (" + IJ.d2s(r,0) + ")";
+			s += IJ.d2s((widthData/r)*cal.pixelWidth,2) + " " + cal.getUnit() + "/c (" + IJ.d2s(r,0) + ")";
 		else
-			s += IJ.d2s(width/r,2) + " p/c (" + IJ.d2s(r,0) + ")";
+			s += IJ.d2s(widthData/r,2) + " p/c (" + IJ.d2s(r,0) + ")";
 		s += ", theta= " + IJ.d2s(theta,2) + IJ.degreeSymbol;
 		return s;
 	}
@@ -2922,8 +2922,8 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		if (r==null || (cr.width!=r.width || cr.height!=r.height)) {
 			// Create a new roi centered on visible part of image, or centered on image if clipboard is >= image
 			ImageCanvas ic = win!=null?ic = win.getCanvas():null;
-			Rectangle srcRect = ic!=null?ic.getSrcRect():new Rectangle(0,0,width,height);
-			int xCenter = w>=width ? width/2 : srcRect.x + srcRect.width/2;
+			Rectangle srcRect = ic!=null?ic.getSrcRect():new Rectangle(0,0,widthData,height);
+			int xCenter = w>=widthData ? widthData/2 : srcRect.x + srcRect.width/2;
 			int yCenter = h>=height ? height/2 : srcRect.y + srcRect.height/2;
 			if (cRoi!=null && cRoi.getType()!=Roi.RECTANGLE) {
 				cRoi.setImage(this);
@@ -3168,7 +3168,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		ImageCanvas ic = getCanvas();
 		if (ic!=null)
 			ic2.setShowAllList(ic.getShowAllList());
-		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bi = new BufferedImage(widthData, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D)bi.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			antialiasRendering?RenderingHints.VALUE_ANTIALIAS_ON:RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -3410,7 +3410,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	}
 
     public String toString() {
-    	return "img[\""+getTitle()+"\" ("+getID()+"), "+getBitDepth()+"-bit, "+width+"x"+height+"x"+getNChannels()+"x"+getNSlices()+"x"+getNFrames()+"]";
+    	return "img[\""+getTitle()+"\" ("+getID()+"), "+getBitDepth()+"-bit, "+widthData+"x"+height+"x"+getNChannels()+"x"+getNSlices()+"x"+getNFrames()+"]";
     }
 
     public void setIJMenuBar(boolean b) {
