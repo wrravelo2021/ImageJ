@@ -189,6 +189,7 @@ public class CompositeImage extends ImagePlus {
 		}
 	}
 
+	@Override
 	public synchronized void updateAndDraw() {
 		if (win==null) {
 			img = null;

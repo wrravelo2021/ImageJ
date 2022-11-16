@@ -25,6 +25,7 @@ import javax.net.ssl.*;
 import java.security.cert.*;
 import java.security.KeyStore;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.math.RoundingMode;
 
 
@@ -1986,7 +1987,7 @@ public class IJ {
 				return "<Error: file is larger than 5MB>";
 			try(
 			  InputStream in = u.openStream();
-			  InputStreamReader inr = new InputStreamReader(in,"UTF-8");
+			  InputStreamReader inr = new InputStreamReader(in,StandardCharsets.UTF_8);
 			  BufferedReader br = new BufferedReader(inr);
 			) {
 				sb = new StringBuffer();
