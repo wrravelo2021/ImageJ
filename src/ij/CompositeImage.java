@@ -26,7 +26,7 @@ public class CompositeImage extends ImagePlus {
 	LUT[] lut;
 	int currentChannel = -1;
 	int previousChannel;
-	int currentSlice = 1;
+	int currentCompositeSlice = 1;
 	int currentFrame = 1;
 	boolean singleChannel;
 	boolean[] active = new boolean[MAX_CHANNELS];
@@ -135,10 +135,12 @@ public class CompositeImage extends ImagePlus {
 		if (mode==COMPOSITE) {
 			cip = new ImageProcessor[channels];
 			for (int i=0; i<channels; ++i) {
-				cip[i] = stack2.getProcessor(i+1);
+				if(stack2 != null) {
+					cip[i] = stack2.getProcessor(i+1);
+				}
 				cip[i].setLut(lut[i]);
 			}
-			currentSlice = currentFrame = 1;
+			currentCompositeSlice = currentFrame = 1;
 		}
 	}
 
@@ -187,7 +189,7 @@ public class CompositeImage extends ImagePlus {
 		}
 	}
 
-	public void updateAndDraw() {
+	public synchronized void updateAndDraw() {
 		if (win==null) {
 			img = null;
 			return;
@@ -261,10 +263,10 @@ public class CompositeImage extends ImagePlus {
 		}
 		//IJ.log(nChannels+" "+ch+" "+currentChannel+"  "+newChannel);
 				
-		if (getSlice()!=currentSlice || getFrame()!=currentFrame) {
-			currentSlice = getSlice();
+		if (getSlice()!=currentCompositeSlice || getFrame()!=currentFrame) {
+			currentCompositeSlice = getSlice();
 			currentFrame = getFrame();
-			int position = getStackIndex(1, currentSlice, currentFrame);
+			int position = getStackIndex(1, currentCompositeSlice, currentFrame);
 			if (cip==null) return;
 			for (int i=0; i<nChannels; ++i)
 				cip[i].setPixels(getImageStack().getProcessor(position+i).getPixels());
@@ -755,7 +757,7 @@ public class CompositeImage extends ImagePlus {
 		img = null;
 		currentChannel = -1;
 		previousChannel = 0;
-		currentSlice = currentFrame = 1;
+		currentCompositeSlice = currentFrame = 1;
 		singleChannel = false;
 		rgbPixels = null;
 		awtImage = null;

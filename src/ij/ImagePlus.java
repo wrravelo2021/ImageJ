@@ -2427,7 +2427,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		@see #getFileInfo
 	*/
     public FileInfo getOriginalFileInfo() {
-    	if (fileInfo==null & url!=null) {
+    	if (fileInfo==null && url!=null) {
     		fileInfo = new FileInfo();
     		fileInfo.width = width;
     		fileInfo.height = height;
