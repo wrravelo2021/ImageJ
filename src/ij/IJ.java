@@ -1997,8 +1997,12 @@ public class IJ {
 			return("<Error: "+e+">");
 		} finally {
 			try {
-				in.close();
-				br.close();
+				if(in != null) {
+					in.close();
+				}
+				if(br != null) {
+					br.close();	
+				}
 			} catch (Exception e) {
 				return("<Error: "+e+">");
 			}
