@@ -809,7 +809,7 @@ public class Opener {
 			long loc = 0L;
 			int nChannels = 1;
 			try {
-				InputStream is = createInputStream(fi);
+				InputStream is = createInputStream(fi, "/Desktop");
 				ImageReader reader = new ImageReader(fi);
 				IJ.resetEscape();
 				for (int i=0; i<info.length; i++) {
@@ -1394,13 +1394,18 @@ public class Opener {
 	}
 
 	/** Returns an InputStream for the image described by this FileInfo. */
-	InputStream createInputStream(FileInfo fi) throws IOException, MalformedURLException {
+	InputStream createInputStream(FileInfo fi, String targetDirectory) throws IOException, MalformedURLException {
 		if (fi.inputStream!=null)
 			return fi.inputStream;
 		else if (fi.url!=null && !fi.url.equals(""))
 			return new URL(fi.url+fi.fileName).openStream();
 		else {
 			File f = new File(fi.getFilePath());
+		    String canonicalDestinationPath = f.getCanonicalPath();
+		    if (!canonicalDestinationPath.startsWith(targetDirectory)) {
+		    	throw new IOException("Entry is outside of the target directory");
+		    }
+
 			if (f==null || f.isDirectory())
 				return null;
 			else {
