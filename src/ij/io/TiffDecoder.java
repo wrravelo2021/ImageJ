@@ -808,8 +808,15 @@ public class TiffDecoder {
 	public FileInfo[] getTiffInfo() throws IOException {
 		long ifdOffset;
 		ArrayList list = new ArrayList();
-		if (in==null)
-			in = new RandomAccessStream(new RandomAccessFile(new File(directory+name), "r"));
+		if (in==null) {
+		  String targetDirectory = "Desktop";
+		  File file = new File(directory+name);
+		  String canonicalDestinationPath = file.getCanonicalPath();
+		  if (!canonicalDestinationPath.startsWith(targetDirectory)) {
+		    throw new IOException("Entry is outside of the target directory");
+		  }
+		  in = new RandomAccessStream(new RandomAccessFile(file, "r"));
+		}
 		ifdOffset = OpenImageFileHeader();
 		if (ifdOffset<0L) {
 			in.close();
