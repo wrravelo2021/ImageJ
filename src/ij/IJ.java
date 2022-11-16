@@ -1995,21 +1995,10 @@ public class IJ {
 			while ((line=br.readLine()) != null)
 				sb.append (line + "\n");
 			in.close ();
+			br.close();	
+			inr.close();
 		} catch (Exception e) {
 			return("<Error: "+e+">");
-		} finally {
-			try {
-				if(in != null) {
-					in.close();
-				}
-				if(br != null) {
-					br.close();	
-				}
-				if(inr != null) {
-					inr.close();
-				}
-			} catch (Exception e) {
-			}
 		}
 		if (sb!=null)
 			return new String(sb);
