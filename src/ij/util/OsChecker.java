@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class OsChecker {
 	private static boolean isMac, isWin, isLinux, is64Bit;
-	private static String osname, osarch;
+	private static String osname, osarch; // TODO not used
 
 	static {
 		osname = System.getProperty("os.name");

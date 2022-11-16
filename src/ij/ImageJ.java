@@ -117,7 +117,7 @@ public class ImageJ extends Frame implements ActionListener,
 	private boolean quitMacro;
 	private long keyPressedTime, actionPerformedTime;
 	private String lastKeyCommand;
-	private boolean isEmbedded;
+	private boolean isEmbedded; // TODO is unused
 	private boolean windowClosed;
 	private static String commandName;
 	private static boolean batchMode;
