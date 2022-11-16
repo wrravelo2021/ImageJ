@@ -5,6 +5,8 @@ import ij.text.*;
 import ij.io.*;
 import ij.plugin.*;
 import ij.plugin.filter.*;
+import ij.util.JavaChecker;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import ij.plugin.frame.Recorder;
 import ij.plugin.frame.ThresholdAdjuster;
@@ -56,9 +58,6 @@ public class IJ {
 	private static java.applet.Applet applet;
 	private static ProgressBar progressBar;
 	private static TextPanel textPanel;
-	private static String osname, osarch;
-	private static boolean isMac, isWin, isLinux, is64Bit;
-	private static int javaVersion;
 	private static boolean controlDown, altDown, spaceDown, shiftDown;
 	private static boolean macroRunning;
 	private static Thread previousThread;
@@ -82,27 +81,7 @@ public class IJ {
 	private static Thread statusBarThread;
 			
 	static {
-		osname = System.getProperty("os.name");
-		isWin = osname.startsWith("Windows");
-		isMac = !isWin && osname.startsWith("Mac");
-		isLinux = osname.startsWith("Linux");
 		String version = System.getProperty("java.version");
-		if (version==null || version.length()<2)
-			version = "1.8";
-		if (version.startsWith("1.8"))
-			javaVersion = 8;
-		else if (version.charAt(0)=='1' && Character.isDigit(version.charAt(1)))
-			javaVersion = 10 + (version.charAt(1) - '0');
-		else if (version.charAt(0)=='2' && Character.isDigit(version.charAt(1)))
-			javaVersion = 20 + (version.charAt(1) - '0');
-		else if (version.startsWith("1.6"))
-			javaVersion = 6;
-		else if (version.startsWith("1.9")||version.startsWith("9"))
-			javaVersion = 9;
-		else if (version.startsWith("1.7"))
-			javaVersion = 7;
-		else
-			javaVersion = 8;
 		dfs = new DecimalFormatSymbols(Locale.US);
 		df = new DecimalFormat[10];
 		df[0] = new DecimalFormat("0", dfs);
@@ -1089,7 +1068,7 @@ public class IJ {
 				controlDown=true;
 				break;
 			case KeyEvent.VK_META:
-				if (isMacintosh()) controlDown=true;
+				if (OsChecker.isMacintosh()) controlDown=true;
 				break;
 			case KeyEvent.VK_ALT:
 				altDown=true;
@@ -1115,7 +1094,7 @@ public class IJ {
 	public static void setKeyUp(int key) {
 		switch (key) {
 			case KeyEvent.VK_CONTROL: controlDown=false; break;
-			case KeyEvent.VK_META: if (isMacintosh()) controlDown=false; break;
+			case KeyEvent.VK_META: if (OsChecker.isMacintosh()) controlDown=false; break;
 			case KeyEvent.VK_ALT: altDown=false; updateStatus(); break;
 			case KeyEvent.VK_SHIFT: shiftDown=false; if (debugMode) beep(); break;
 			case KeyEvent.VK_SPACE:
@@ -1142,78 +1121,6 @@ public class IJ {
 	public static void setInputEvent(InputEvent e) {
 		altDown = e.isAltDown();
 		shiftDown = e.isShiftDown();
-	}
-
-	/** Returns true if this machine is a Macintosh. */
-	public static boolean isMacintosh() {
-		return isMac;
-	}
-	
-	/** Returns true if this machine is a Macintosh running OS X. */
-	public static boolean isMacOSX() {
-		return isMacintosh();
-	}
-
-	/** Returns true if this machine is running Windows. */
-	public static boolean isWindows() {
-		return isWin;
-	}
-	
-	/** Returns the Java version (6, 7, 8, 9, 10, etc.). */
-	public static int javaVersion() {
-		return javaVersion;
-	}
-	
-	/** Always returns true. */
-	public static boolean isJava2() {
-		return true;
-	}
-	
-	/** Always returns true. */
-	public static boolean isJava14() {
-		return true;
-	}
-
-	/** Always returns true. */
-	public static boolean isJava15() {
-		return true;
-	}
-
-	/** Returns true if ImageJ is running on a Java 1.6 or greater JVM. */
-	public static boolean isJava16() {
-		return javaVersion >= 6;
-	}
-
-	/** Returns true if ImageJ is running on a Java 1.7 or greater JVM. */
-	public static boolean isJava17() {
-		return javaVersion >= 7;
-	}
-
-	/** Returns true if ImageJ is running on a Java 1.8 or greater JVM. */
-	public static boolean isJava18() {
-		return javaVersion >= 8;
-	}
-
-	/** Returns true if ImageJ is running on a Java 1.9 or greater JVM. */
-	public static boolean isJava19() {
-		return javaVersion >= 9;
-	}
-
-	/** Returns true if ImageJ is running on Linux. */
-	public static boolean isLinux() {
-		return isLinux;
-	}
-
-	/** Obsolete; always returns false. */
-	public static boolean isVista() {
-		return false;
-	}
-	
-	/** Returns true if ImageJ is running a 64-bit version of Java. */
-	public static boolean is64Bit() {
-		if (osarch==null)
-			osarch = System.getProperty("os.arch");
-		return osarch!=null && osarch.indexOf("64")!=-1;
 	}
 
 	/** Displays an error message and returns true if the
@@ -1569,7 +1476,7 @@ public class IJ {
 			// timeout after 1 second unless current thread is event dispatch thread
 			String thread = Thread.currentThread().getName();
 			int timeout = thread!=null&&thread.indexOf("EventQueue")!=-1?0:1000;
-			if (IJ.isMacOSX() && IJ.isJava18() && timeout>0)
+			if (OsChecker.isMacOSX() && JavaChecker.isJava18() && timeout>0)
 				timeout = 250;  //work around OS X/Java 8 window activation bug
 			while (true) {
 				wait(10);
@@ -1859,7 +1766,7 @@ public class IJ {
 			dir = Prefs.getPrefsDir();
 		else if (title2.equals("temp")) {
 			dir = System.getProperty("java.io.tmpdir");
-			if (isMacintosh()) dir = "/tmp/";
+			if (OsChecker.isMacintosh()) dir = "/tmp/";
 		} else if (title2.equals("image")) {
 			ImagePlus imp = WindowManager.getCurrentImage();
 			FileInfo fi = imp!=null?imp.getOriginalFileInfo():null;
@@ -1884,7 +1791,7 @@ public class IJ {
 		if (path==null)
 			return null;
 		if (path.length()>0 && !(path.endsWith(File.separator)||path.endsWith("/"))) {
-			if (IJ.isWindows()&&path.contains(File.separator))
+			if (OsChecker.isWindows()&&path.contains(File.separator))
 				path += File.separator;
 			else
 				path += "/";

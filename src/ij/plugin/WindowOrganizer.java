@@ -1,6 +1,7 @@
 package ij.plugin;
 import ij.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.gui.*;
 import ij.plugin.frame.ThresholdAdjuster;
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.awt.*;
 public class WindowOrganizer implements PlugIn {
 
 	private static final int XSTART=4, YSTART=94, XOFFSET=8, YOFFSET=24,MAXSTEP=200,GAP=2;
-	private int titlebarHeight = IJ.isMacintosh()?40:20;
+	private int titlebarHeight = OsChecker.isMacintosh()?40:20;
 
 	public void run(String arg) {
 		if (arg.equals("imagej"))

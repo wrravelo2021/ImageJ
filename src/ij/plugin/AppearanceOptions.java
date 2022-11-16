@@ -2,6 +2,7 @@ package ij.plugin;
 import ij.*;
 import ij.gui.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.io.*;
 import ij.plugin.filter.*;
 import ij.plugin.frame.*;
@@ -35,14 +36,14 @@ public class AppearanceOptions implements PlugIn, DialogListener {
 		gd.addCheckbox("Use inverting lookup table", Prefs.useInvertingLut);
 		gd.addCheckbox("Auto contrast stacks", Prefs.autoContrast);
 		gd.addCheckbox("IJ window always on top", Prefs.alwaysOnTop);
-		if (IJ.isLinux())
+		if (OsChecker.isLinux())
 			gd.addCheckbox("Cancel button on right", Prefs.dialogCancelButtonOnRight);
 		gd.addChoice("16-bit range:", ranges, ranges[rangeIndex]);
 		Font font = new Font("SansSerif", Font.PLAIN, 9);
-		if (!IJ.isMacOSX()) {
+		if (!OsChecker.isMacOSX()) {
 			gd.setInsets(0, 0, 0);
 			gd.addNumericField("Menu font size:", Menus.getFontSize(), 0, 4, "points");
-			if (IJ.isWindows()) {
+			if (OsChecker.isWindows()) {
 				gd.setInsets(2,30,5);
 				gd.addMessage("Setting size>17 may not work on Windows", font);
 			}
@@ -80,7 +81,7 @@ public class AppearanceOptions implements PlugIn, DialogListener {
 		boolean messageShown = false;
 		double scale =  Prefs.getGuiScale();
 		if (scale!=saveScale) {
-			if (!IJ.isMacOSX()) {
+			if (!OsChecker.isMacOSX()) {
 				IJ.showMessage("Appearance", "Restart ImageJ to resize \"ImageJ\" window");
 				messageShown = true;
 			} else {
@@ -92,7 +93,7 @@ public class AppearanceOptions implements PlugIn, DialogListener {
 		boolean fontSizeChanged = menuFontSize!=Menus.getFontSize();
 		if (fontSizeChanged)
 			Menus.setFontSize(menuFontSize);
-		if (!messageShown && fontSizeChanged && !IJ.isMacOSX())
+		if (!messageShown && fontSizeChanged && !OsChecker.isMacOSX())
 			IJ.showMessage("Appearance", "Restart ImageJ to use the new font size");
 		if (Prefs.useInvertingLut) {
 			IJ.showMessage("Appearance",
@@ -110,7 +111,7 @@ public class AppearanceOptions implements PlugIn, DialogListener {
 	}
 	
 	public boolean dialogItemChanged(GenericDialog gd, AWTEvent e) {
-		if (IJ.isMacOSX()) IJ.wait(100);
+		if (OsChecker.isMacOSX()) IJ.wait(100);
 		boolean interpolate = gd.getNextBoolean();
 		Prefs.open100Percent = gd.getNextBoolean();
 		boolean blackCanvas = gd.getNextBoolean();
@@ -119,9 +120,9 @@ public class AppearanceOptions implements PlugIn, DialogListener {
 		boolean alwaysOnTop = Prefs.alwaysOnTop;
 		Prefs.autoContrast = gd.getNextBoolean();
 		Prefs.alwaysOnTop = gd.getNextBoolean();
-		if (IJ.isLinux())
+		if (OsChecker.isLinux())
 			Prefs.dialogCancelButtonOnRight = gd.getNextBoolean();
-		if (!IJ.isMacOSX())
+		if (!OsChecker.isMacOSX())
 			menuFontSize = (int)gd.getNextNumber();
 		Prefs.setGuiScale(gd.getNextNumber());
 		if (interpolate!=Prefs.interpolateScaledImages) {

@@ -1,5 +1,7 @@
 package ij.plugin;
 import ij.IJ;
+import ij.util.OsChecker;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -86,9 +88,9 @@ public class BrowserLauncher implements PlugIn {
 	 */
 	public static void openURL(String url) throws IOException {
 		String errorMessage = "";
-		if (IJ.isMacOSX())
+		if (OsChecker.isMacOSX())
 			IJ.runMacro("exec('open', getArgument())",url);
-		else if (IJ.isWindows()) {
+		else if (OsChecker.isWindows()) {
 			String cmd = "rundll32 url.dll,FileProtocolHandler " + url;
 			if (System.getProperty("os.name").startsWith("Windows 2000"))
 				cmd = "rundll32 shell32.dll,ShellExec_RunDLL " + url;

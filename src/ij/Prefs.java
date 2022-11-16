@@ -1,5 +1,8 @@
 package ij;
 import ij.util.Java2;
+import ij.util.JavaChecker;
+import ij.util.OsChecker;
+
 import java.io.*;
 import java.util.*;
 import java.applet.*;
@@ -166,7 +169,7 @@ public class Prefs {
 	/** Ignore stack positions when displaying points. */
 	public static boolean showAllPoints;
 	/** Set MenuBar on Macs running Java 8. */
-	public static boolean setIJMenuBar = IJ.isMacOSX();
+	public static boolean setIJMenuBar = OsChecker.isMacOSX();
 	/** "ImageJ" window is always on top. */
 	public static boolean alwaysOnTop;
 	/** Automatically spline fit line selections */
@@ -317,7 +320,7 @@ public class Prefs {
 			} catch (IOException e) {
 				return("Error loading "+PROPS_NAME);
 			}
-			imagesURL = props.getProperty(IJ.isJava18()?"images.location":"images.location2");
+			imagesURL = props.getProperty(JavaChecker.isJava18()?"images.location":"images.location2");
 		}
 		loadPreferences();
 		loadOptions();
@@ -421,7 +424,7 @@ public class Prefs {
 			// use home directory
 			if (prefsDir==null) {
 				String dir = System.getProperty("user.home");
-				if (IJ.isMacOSX())
+				if (OsChecker.isMacOSX())
 					dir += "/Library/Preferences";
 				else
 					dir += File.separator+".imagej";
@@ -456,7 +459,7 @@ public class Prefs {
 		String path = getPrefsDir()+separator+PREFS_NAME;
 		boolean ok =  loadPrefs(path);
 		if (!ok) { // not found
-			if (IJ.isWindows())
+			if (OsChecker.isWindows())
 				path = ImageJDir +separator+PREFS_NAME;
 			else
 				path = System.getProperty("user.home")+separator+PREFS_NAME; //User's home dir
@@ -496,8 +499,8 @@ public class Prefs {
 			prefs.put(DIV_BY_ZERO_VALUE, Double.toString(FloatBlitter.divideByZeroValue));
 			prefs.put(NOISE_SD, Double.toString(Filters.getSD()));
 			if (threads>1) prefs.put(THREADS, Integer.toString(threads));
-			if (IJ.isMacOSX()) useJFileChooser = false;
-			if (!IJ.isLinux()) dialogCancelButtonOnRight = false;
+			if (OsChecker.isMacOSX()) useJFileChooser = false;
+			if (!OsChecker.isLinux()) dialogCancelButtonOnRight = false;
 			saveOptions(prefs);
 			savePluginPrefs(prefs);
 			ImageJ ij = IJ.getInstance();
@@ -541,7 +544,7 @@ public class Prefs {
 
 	static void loadOptions() {
 		int defaultOptions = ANTIALIASING+AVOID_RESLICE_INTERPOLATION+ANTIALIASED_TOOLS+MULTI_POINT_MODE
-			+(!IJ.isMacOSX()?RUN_SOCKET_LISTENER:0)+BLACK_BACKGROUND;
+			+(!OsChecker.isMacOSX()?RUN_SOCKET_LISTENER:0)+BLACK_BACKGROUND;
 		int options = getInt(OPTIONS, defaultOptions);
 		usePointerCursor = (options&USE_POINTER)!=0;
 		//antialiasedText = (options&ANTIALIASING)!=0;
@@ -572,7 +575,7 @@ public class Prefs {
 		avoidResliceInterpolation = (options&AVOID_RESLICE_INTERPOLATION)!=0;
 		keepUndoBuffers = (options&KEEP_UNDO_BUFFERS)!=0;
 		
-		defaultOptions = (!IJ.isMacOSX()?USE_FILE_CHOOSER:0);
+		defaultOptions = (!OsChecker.isMacOSX()?USE_FILE_CHOOSER:0);
 		int options2 = getInt(OPTIONS2, defaultOptions);
 		useSystemProxies = (options2&USE_SYSTEM_PROXIES)!=0;
 		useFileChooser = (options2&USE_FILE_CHOOSER)!=0;

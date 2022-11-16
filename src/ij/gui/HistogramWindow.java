@@ -11,6 +11,8 @@ import ij.process.*;
 import ij.measure.*;
 import ij.plugin.filter.Analyzer;
 import ij.text.TextWindow;
+import ij.util.JavaChecker;
+import ij.util.OsChecker;
 
 /** This class is an extended ImageWindow that displays histograms. */
 public class HistogramWindow extends ImageWindow implements Measurements, ActionListener, 
@@ -193,9 +195,9 @@ public class HistogramWindow extends ImageWindow implements Measurements, Action
 	private void setup(ImagePlus imp) {
 		boolean isRGB = imp.isRGB();
  		Panel buttons = new Panel();
- 		int hgap = IJ.isMacOSX()||isRGB?1:5;
+ 		int hgap = OsChecker.isMacOSX()||isRGB?1:5;
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT,hgap,0));
-		int trim = IJ.isMacOSX()?6:0;
+		int trim = OsChecker.isMacOSX()?6:0;
 		list = new TrimmedButton("List", trim);
 		list.addActionListener(this);
 		buttons.add(list);
@@ -220,7 +222,7 @@ public class HistogramWindow extends ImageWindow implements Measurements, Action
 		add(buttons);
 		GUI.scale(buttons);
 		pack();
-		if (IJ.isMacOSX() && IJ.isJava18()) {
+		if (OsChecker.isMacOSX() && JavaChecker.isJava18()) {
 			IJ.wait(50);
 			pack();
 		}

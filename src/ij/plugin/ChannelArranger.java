@@ -1,6 +1,7 @@
 package ij.plugin;
 import ij.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.gui.*;
 import java.awt.*;
 import ij.plugin.ChannelSplitter;
@@ -284,7 +285,7 @@ class ThumbnailsCanvas extends Canvas implements MouseListener, MouseMotionListe
 			}
 		}
 		add(popup);
-		if (IJ.isMacOSX())
+		if (OsChecker.isMacOSX())
 			IJ.wait(10);
 		popup.show(this, x, y);
 		setCursor(defaultCursor);

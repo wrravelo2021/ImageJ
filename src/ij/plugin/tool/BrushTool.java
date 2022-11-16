@@ -1,6 +1,7 @@
 package ij.plugin.tool;
 import ij.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.gui.*;
 import ij.plugin.Colors;
 import java.awt.*;
@@ -56,7 +57,7 @@ public class BrushTool extends PlugInTool implements Runnable {
 			ip = overlayImage.getProcessor();
 		else
 			ip = imp.getProcessor();
-		int ctrlMask = IJ.isMacintosh() ? InputEvent.META_MASK : InputEvent.CTRL_MASK;
+		int ctrlMask = OsChecker.isMacintosh() ? InputEvent.META_MASK : InputEvent.CTRL_MASK;
 		int resizeMask = InputEvent.SHIFT_MASK | ctrlMask;
 		if ((e.getModifiers() & resizeMask) == resizeMask) {
 			mode = RESIZING;
@@ -302,7 +303,7 @@ public class BrushTool extends PlugInTool implements Runnable {
 	}
 	
 	private String getHelp() {
-		String ctrlString = IJ.isMacintosh()? "<i>cmd</i>":"<i>ctrl</i>";
+		String ctrlString = OsChecker.isMacintosh()? "<i>cmd</i>":"<i>ctrl</i>";
 		return	
 			 "<html>"
 			+"<font size=+1>"

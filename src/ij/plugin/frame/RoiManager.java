@@ -128,7 +128,7 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 		list.addKeyListener(ij);
 		list.addMouseListener(this);
 		list.addMouseWheelListener(this);
-		if (IJ.isLinux()) list.setBackground(Color.white);
+		if (OsChecker.isLinux()) list.setBackground(Color.white);
 		JScrollPane scrollPane = new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add("Center", scrollPane);
 		panel = new Panel();
@@ -2220,7 +2220,7 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 				alt = false;
 			}
 			add(shift, alt);
-			if (IJ.isJava18()&&IJ.isMacOSX())
+			if (JavaChecker.isJava18()&&OsChecker.isMacOSX())
 				repaint();
 		} else if (cmd.equals("add & draw"))
 			addAndDraw(false);
@@ -2283,7 +2283,7 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 			showAll(NO_LABELS);
 			if (Interpreter.isBatchMode()) IJ.wait(250);
 		} else if (cmd.equals("deselect")||cmd.indexOf("all")!=-1) {
-			if (IJ.isMacOSX()) ignoreInterrupts = true;
+			if (OsChecker.isMacOSX()) ignoreInterrupts = true;
 			deselect();
 			IJ.wait(50);
 		} else if (cmd.equals("reset")) {
@@ -2383,7 +2383,7 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 
 	/** Clears this RoiManager so that it contains no ROIs. */
 	public void reset() {
-		if (IJ.isMacOSX() && IJ.isMacro())
+		if (OsChecker.isMacOSX() && IJ.isMacro())
 			ignoreInterrupts = true;
 		if (listModel!=null)
 			listModel.removeAllElements();
@@ -2726,9 +2726,9 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 			if (index>=getCount()) index = getCount();
 			//IJ.log(index+"  "+rot);
 			select(index);
-			if (IJ.isWindows())
+			if (OsChecker.isWindows())
 				list.requestFocusInWindow();
-			if (IJ.isJava18()&&IJ.isMacOSX())
+			if (JavaChecker.isJava18()&&OsChecker.isMacOSX())
 				repaint();
 		}
 	}

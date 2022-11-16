@@ -77,7 +77,7 @@ public class ImageWindow extends Frame implements FocusListener, WindowListener,
 			setBackground(Color.black);
 		} else {
 			setForeground(Color.black);
-		if (IJ.isLinux())
+		if (OsChecker.isLinux())
 			setBackground(ImageJ.backgroundColor);
 		else
 			setBackground(Color.white);
@@ -132,7 +132,7 @@ public class ImageWindow extends Frame implements FocusListener, WindowListener,
 			WindowManager.setCurrentWindow(this);
 		} else {
 			setLocationAndSize(false);
-			if (ij!=null && !IJ.isMacintosh()) {
+			if (ij!=null && !OsChecker.isMacintosh()) {
 				Image img = ij.getIconImage();
 				if (img!=null) try {
 					setIconImage(img);
@@ -400,7 +400,7 @@ public class ImageWindow extends Frame implements FocusListener, WindowListener,
 		Rectangle r = ic.getBounds();
 		int extraWidth = MIN_WIDTH - r.width;
 		int extraHeight = MIN_HEIGHT - r.height;
-		if (extraWidth<=0 && extraHeight<=0 && !Prefs.noBorder && !IJ.isLinux())
+		if (extraWidth<=0 && extraHeight<=0 && !Prefs.noBorder && !OsChecker.isLinux())
 			g.drawRect(r.x-1, r.y-1, r.width+1, r.height+1);
     }
     
@@ -564,7 +564,7 @@ public class ImageWindow extends Frame implements FocusListener, WindowListener,
 	}
 	
 	public void maximize() {
-		if (GenericDialog.getInstance()!=null && IJ.isMacOSX() && IJ.isJava18())
+		if (GenericDialog.getInstance()!=null && OsChecker.isMacOSX() && JavaChecker.isJava18())
 			return; // workaround for OSX/Java 8 maximize bug 
 		Rectangle rect = getMaximumBounds();
 		if (IJ.debugMode) IJ.log("maximize: "+rect);
@@ -592,7 +592,7 @@ public class ImageWindow extends Frame implements FocusListener, WindowListener,
 
 	public void windowActivated(WindowEvent e) {
 		if (IJ.debugMode) IJ.log("windowActivated: "+imp.getTitle());
-		if (IJ.isMacOSX())
+		if (OsChecker.isMacOSX())
 			setImageJMenuBar(this);
 		if (imp==null)
 			return;

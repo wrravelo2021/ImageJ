@@ -2,6 +2,8 @@ package ij.plugin;
 import ij.*;
 import ij.gui.*;
 import java.io.*;
+
+import ij.util.OsChecker;
 import ij.util.Tools;
 
 
@@ -24,7 +26,7 @@ public class Memory implements PlugIn {
 		int max = (int)(getMemorySetting()/1048576L);
 		boolean unableToSet = max==0;
 		if (max==0) max = (int)(maxMemory()/1048576L);
-		String title = "Memory "+(IJ.is64Bit()?"(64-bit)":"(32-bit)");
+		String title = "Memory "+(OsChecker.is64Bit()?"(64-bit)":"(32-bit)");
 		GenericDialog gd = new GenericDialog(title);
 		gd.addNumericField("Maximum memory:", max, 0, 5, "MB");
 		gd.addNumericField("Parallel threads:", Prefs.getThreads(), 0, 5, "");
@@ -45,14 +47,14 @@ public class Memory implements PlugIn {
 		}
 		if (unableToSet && max2!=max)
 			{showError(); return;}
-		if (IJ.isMacOSX() && max2<256)
+		if (OsChecker.isMacOSX() && max2<256)
 			max2 = 256;
 		else if (max2<32)
 			max2 = 32;
 		if (max2==max) return;
-		int limit = IJ.isWindows()?1600:1700;
+		int limit = OsChecker.isWindows()?1600:1700;
 		String OSXInfo = "";
-		if (max2>=limit && !IJ.is64Bit()) {
+		if (max2>=limit && !OsChecker.is64Bit()) {
 			if (!IJ.showMessageWithCancel(title, 
 			"Note: setting the memory limit to a value\n"
 			+"greater than "+limit+"MB on a 32-bit system\n"
@@ -74,7 +76,7 @@ public class Memory implements PlugIn {
 		} catch (IOException e) {
 			String error = e.getMessage();
 			if (error==null || error.equals("")) error = ""+e;
-			String name = IJ.isMacOSX()?"Info.plist":"ImageJ.cfg";
+			String name = OsChecker.isMacOSX()?"Info.plist":"ImageJ.cfg";
 			String msg = 
 				   "Unable to update the file \"" + name + "\".\n"
 				+ " \n"
@@ -83,7 +85,7 @@ public class Memory implements PlugIn {
 			return;
 		}
 		String hint = "";
-		if (IJ.isWindows() && max2>640 && max2>max)
+		if (OsChecker.isWindows() && max2>640 && max2>max)
 			hint = "\nDelete the \"ImageJ.cfg\" file, located in the ImageJ folder,\nif ImageJ fails to start.";
 		IJ.showMessage("Memory", "The new " + max2 +"MB limit will take effect after ImageJ is restarted."+hint);		
 	}
@@ -91,7 +93,7 @@ public class Memory implements PlugIn {
 	public long getMemorySetting() {
 		if (IJ.getApplet()!=null) return 0L;
 		long max = 0L;
-		if (IJ.isMacOSX()) {
+		if (OsChecker.isMacOSX()) {
 			String appPath = System.getProperty("java.class.path");
 			if (appPath==null) return 0L;
 			int index = appPath.indexOf(".app/");
@@ -111,9 +113,9 @@ public class Memory implements PlugIn {
 			+ "    "+IJ.URL+"/docs/install/\n"
 			+ " \n";
 		if (fileMissing) {
-			if (IJ.isMacOSX())
+			if (OsChecker.isMacOSX())
 				msg += "The ImageJ application (ImageJ.app) was not found.\n \n";
-			else if (IJ.isWindows())
+			else if (OsChecker.isWindows())
 				msg += "ImageJ.cfg not found.\n \n";
 			fileMissing = false;
 		}

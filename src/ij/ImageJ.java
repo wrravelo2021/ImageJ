@@ -194,7 +194,7 @@ public class ImageJ extends Frame implements ActionListener,
 		Dimension tbSize = toolbar.getPreferredSize();
 		setCursor(Cursor.getDefaultCursor()); // work-around for JDK 1.1.8 bug
 		if (mode!=NO_SHOW) {
-			if (IJ.isWindows()) try {setIcon();} catch(Exception e) {}
+			if (OsChecker.isWindows()) try {setIcon();} catch(Exception e) {}
 			setResizable(false);
 			setAlwaysOnTop(Prefs.alwaysOnTop);
 			pack();
@@ -203,14 +203,14 @@ public class ImageJ extends Frame implements ActionListener,
 			Dimension size = getSize();
 			if (size!=null) {
 				if (IJ.debugMode) IJ.log("size: "+size);
-				if (IJ.isWindows() && (size.height>108||IJ.javaVersion()>=10)) {
+				if (OsChecker.isWindows() && (size.height>108||JavaChecker.javaVersion()>=10)) {
 					// workaround for IJ window layout and FileDialog freeze problems with Windows 10 Creators Update
 					IJ.wait(10);
 					pack();
 					if (IJ.debugMode) IJ.log("pack()");
 					if (!Prefs.jFileChooserSettingChanged)
 						Prefs.useJFileChooser = true;
-				} else if (IJ.isMacOSX()) {
+				} else if (OsChecker.isMacOSX()) {
 					Rectangle maxBounds = GUI.getMaxWindowBounds(this);
 					if (loc.x+size.width>maxBounds.x+maxBounds.width)
 						setLocation(loc.x, loc.y);
@@ -223,9 +223,9 @@ public class ImageJ extends Frame implements ActionListener,
 			IJ.error(err2);
 			//IJ.runPlugIn("ij.plugin.ClassChecker", "");
 		}
-		if (IJ.isMacintosh()&&applet==null) {
+		if (OsChecker.isMacintosh()&&applet==null) {
 			try {
-				if (IJ.javaVersion()>8) // newer JREs use different drag-drop, about mechanism
+				if (JavaChecker.javaVersion()>8) // newer JREs use different drag-drop, about mechanism
 					IJ.runPlugIn("ij.plugin.MacAdapter9", "");
 				else
 					IJ.runPlugIn("ij.plugin.MacAdapter", "");
@@ -412,7 +412,7 @@ public class ImageJ extends Frame implements ActionListener,
 	}
 
 	private String version() {
-		return "ImageJ "+VERSION+BUILD + "; "+"Java "+System.getProperty("java.version")+(IJ.is64Bit()?" [64-bit]; ":" [32-bit]; ");
+		return "ImageJ "+VERSION+BUILD + "; "+"Java "+System.getProperty("java.version")+(OsChecker.is64Bit()?" [64-bit]; ":" [32-bit]; ");
 	}
 	
 	public void mouseReleased(MouseEvent e) {}
@@ -437,7 +437,7 @@ public class ImageJ extends Frame implements ActionListener,
 		boolean control = (flags & KeyEvent.CTRL_MASK) != 0;
 		boolean alt = (flags & KeyEvent.ALT_MASK) != 0;
 		boolean meta = (flags & KeyEvent.META_MASK) != 0;
-		if (keyCode==KeyEvent.VK_H && meta && IJ.isMacOSX())
+		if (keyCode==KeyEvent.VK_H && meta && OsChecker.isMacOSX())
 			return; // Allow macOS to run ImageJ>Hide ImageJ command
 		String cmd = null;
 		ImagePlus imp = WindowManager.getCurrentImage();
@@ -451,7 +451,7 @@ public class ImageJ extends Frame implements ActionListener,
 					if (deleteOverlayRoi(imp))
 							return;
 				}
-				if ((flags & KeyEvent.META_MASK)!=0 && IJ.isMacOSX())
+				if ((flags & KeyEvent.META_MASK)!=0 && OsChecker.isMacOSX())
 					return;
 				if (alt) {
 					switch (keyChar) {
@@ -530,7 +530,7 @@ public class ImageJ extends Frame implements ActionListener,
 					Roi roi = imp.getRoi();
 					if (shift&&imp==Orthogonal_Views.getImage())
 						return;
-					if (IJ.isMacOSX() && IJ.isJava18()) {
+					if (OsChecker.isMacOSX() && JavaChecker.isJava18()) {
 						RoiManager rm = RoiManager.getInstance();
 						boolean rmActive = rm!=null && rm==WindowManager.getActiveWindow();
 						if (rmActive && (keyCode==KeyEvent.VK_DOWN||keyCode==KeyEvent.VK_UP))
@@ -670,7 +670,7 @@ public class ImageJ extends Frame implements ActionListener,
 	}
 
 	public void windowActivated(WindowEvent e) {
-		if (IJ.isMacintosh() && !quitting) {
+		if (OsChecker.isMacintosh() && !quitting) {
 			IJ.wait(10); // may be needed for Java 1.4 on OS X
 			MenuBar mb = Menus.getMenuBar();
 			if (mb!=null && mb!=getMenuBar()) {
@@ -752,7 +752,7 @@ public class ImageJ extends Frame implements ActionListener,
 		}
   		// If existing ImageJ instance, pass arguments to it and quit.
   		boolean passArgs = (mode==IMAGEJ_APP||mode==STANDALONE) && !noGUI;
-		if (IJ.isMacOSX() && !commandLine)
+		if (OsChecker.isMacOSX() && !commandLine)
 			passArgs = false;
 		if (passArgs && isRunning(args)) 
   			return;

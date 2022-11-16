@@ -1,6 +1,7 @@
 package ij.plugin.tool;
 import ij.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.gui.*;
 import ij.plugin.Colors;
 import java.awt.*;
@@ -35,7 +36,7 @@ public class OverlayBrushTool extends PlugInTool implements Runnable {
 		xStart = x;
 		yStart = y;
 		oldWidth = width;
-		int ctrlMask = IJ.isMacintosh() ? InputEvent.META_MASK : InputEvent.CTRL_MASK;
+		int ctrlMask = OsChecker.isMacintosh() ? InputEvent.META_MASK : InputEvent.CTRL_MASK;
 		int resizeMask = InputEvent.SHIFT_MASK | ctrlMask;
 		if ((e.getModifiers() & resizeMask) == resizeMask) {
 			mode = DO_RESIZE;
@@ -205,7 +206,7 @@ public class OverlayBrushTool extends PlugInTool implements Runnable {
 			gd.addSlider("Transparency:", 0, 100, transparency);
 			gd.addChoice("Color:", Colors.getColors(colorName), colorName);
 			gd.setInsets(10, 0, 0);
-			String ctrlString = IJ.isMacintosh()? "CMD":"CTRL";
+			String ctrlString = OsChecker.isMacintosh()? "CMD":"CTRL";
 			gd.addMessage("SHIFT for horizontal or vertical lines\n"+
 					"ALT to draw in background color\n"+
 					ctrlString+"-SHIFT-drag to change brush width\n"+

@@ -2,6 +2,7 @@ package ij.plugin.filter;
 import ij.*;
 import ij.gui.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.measure.*;
 import java.awt.*;
 
@@ -22,7 +23,7 @@ public class Filler implements PlugInFilter, Measurements {
 			roi = imp.getRoi();			
 		isTextRoi = roi!=null && (roi instanceof TextRoi);
 	 	if (isTextRoi && (arg.equals("draw") || arg.equals("fill")) && ((TextRoi)roi).getAngle()!=0.0) {
-	 		String s = IJ.isMacOSX()?"command+b":"ctrl+b";
+	 		String s = OsChecker.isMacOSX()?"command+b":"ctrl+b";
 	 		IJ.error("Draw rotated text by pressing "+s+" (Image>Overlay>Add Selection).");
 	 		return DONE;
 		}

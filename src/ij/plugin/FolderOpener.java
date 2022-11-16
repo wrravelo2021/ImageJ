@@ -193,7 +193,7 @@ public class FolderOpener implements PlugIn, TextListener {
 		list = getFilteredList(list, filter, pluginName);
 		if (list==null)
 			return;
-		if (sortFileNames || IJ.isMacOSX())
+		if (sortFileNames || OsChecker.isMacOSX())
 			list = StringSorter.sortNumerically(list);
 		if (IJ.debugMode) IJ.log("FolderOpener: "+directory+" ("+list.length+" files)");
 		int width=0, height=0, stackSize=1;
@@ -235,7 +235,7 @@ public class FolderOpener implements PlugIn, TextListener {
 			}
 			IJ.showStatus("");
 			t0 = System.currentTimeMillis();
-			if (dicomImages && !IJ.isMacOSX() && !sortFileNames)
+			if (dicomImages && !OsChecker.isMacOSX() && !sortFileNames)
 				list = StringSorter.sortNumerically(list);
 
 			if (this.nFiles<1)

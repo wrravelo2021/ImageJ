@@ -3,6 +3,8 @@ import ij.*;
 import ij.gui.*;
 import ij.plugin.frame.Recorder;
 import ij.util.Java2;
+import ij.util.OsChecker;
+
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
@@ -16,7 +18,7 @@ import javax.swing.filechooser.*;
  	/** Display a dialog using the specified title. */
  	public DirectoryChooser(String title) {
  		this.title = title;
-		if (IJ.isMacOSX() && !Prefs.useJFileChooser)
+		if (OsChecker.isMacOSX() && !Prefs.useJFileChooser)
 			getDirectoryUsingFileDialog(title);
  		else {
 			String macroOptions = Macro.getOptions();
@@ -121,7 +123,7 @@ import javax.swing.filechooser.*;
  	public String getDirectory() {
 		if (IJ.debugMode)
 			IJ.log("DirectoryChooser.getDirectory: "+directory);
-		if (Recorder.record && !IJ.isMacOSX())
+		if (Recorder.record && !OsChecker.isMacOSX())
 			Recorder.recordPath(title, directory);
  		return directory;
  	}

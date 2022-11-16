@@ -3,6 +3,7 @@ import ij.*;
 import ij.gui.*;
 import ij.io.*;
 import ij.process.ImageProcessor;
+import ij.util.OsChecker;
 import ij.plugin.frame.Recorder;
 import java.io.*;
 import java.awt.Point;
@@ -51,7 +52,7 @@ public class DragAndDrop implements PlugIn, DropTargetListener, Runnable {
 					Object ob = t.getTransferData(flavors[i]);
 					if (!(ob instanceof String)) continue;
 					String s = ob.toString().trim();
-					if (IJ.isLinux() && s.length()>1 && (int)s.charAt(1)==0)
+					if (OsChecker.isLinux() && s.length()>1 && (int)s.charAt(1)==0)
 						s = fixLinuxString(s);
 					ArrayList list = new ArrayList();
 					if (s.indexOf("href=\"")!=-1 || s.indexOf("src=\"")!=-1) {
@@ -87,7 +88,7 @@ public class DragAndDrop implements PlugIn, DropTargetListener, Runnable {
 		}
 		dtde.dropComplete(true);
 		if (flavors==null || flavors.length==0) {
-			if (IJ.isMacOSX())
+			if (OsChecker.isMacOSX())
 				IJ.error("First drag and drop ignored. Please try again. You can avoid this\n"
 				+"problem by dragging to the toolbar instead of the status bar.");
 			else

@@ -80,7 +80,7 @@ public class Recorder extends PlugInFrame implements PlugIn, ActionListener, Ima
 		add("North", panel);
 		textArea = new TextArea("", 15, 80, TextArea.SCROLLBARS_VERTICAL_ONLY);
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-		if (IJ.isLinux()) textArea.setBackground(Color.white);
+		if (OsChecker.isLinux()) textArea.setBackground(Color.white);
 		add("Center", textArea);
 		GUI.scale(this);
 		pack();
@@ -131,7 +131,7 @@ public class Recorder extends PlugInFrame implements PlugIn, ActionListener, Ima
 	public static String fixPath (String path) {
 		if (path==null)
 			path = "";
-		if (!IJ.isWindows())
+		if (!OsChecker.isWindows())
 			return path;
 		StringBuilder sb = new StringBuilder();
 		for (int i=0; i<path.length(); i++) {
@@ -900,7 +900,7 @@ public class Recorder extends PlugInFrame implements PlugIn, ActionListener, Ima
 	
 	/** Override windowActivated in PlugInFrame. */
 	public void windowActivated(WindowEvent e) {
-		if (IJ.isMacintosh() && !IJ.isJava17())
+		if (OsChecker.isMacintosh() && !JavaChecker.isJava17())
 			this.setMenuBar(Menus.getMenuBar());
 		WindowManager.setWindow(this);
 	}

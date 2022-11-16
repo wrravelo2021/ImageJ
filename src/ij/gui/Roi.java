@@ -1,6 +1,7 @@
 package ij.gui;
 import ij.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.measure.*;
 import ij.plugin.*;
 import ij.plugin.frame.Recorder;
@@ -1264,7 +1265,7 @@ public class Roi extends Object implements Cloneable, java.io.Serializable, Iter
 	protected void handleMouseDrag(int sx, int sy, int flags) {
 		if (ic==null) return;
 		constrain = (flags&Event.SHIFT_MASK)!=0;
-		center = (flags&Event.CTRL_MASK)!=0 || (IJ.isMacintosh()&&(flags&Event.META_MASK)!=0);
+		center = (flags&Event.CTRL_MASK)!=0 || (OsChecker.isMacintosh()&&(flags&Event.META_MASK)!=0);
 		aspect = (flags&Event.ALT_MASK)!=0;
 		switch(state) {
 			case CONSTRUCTING:

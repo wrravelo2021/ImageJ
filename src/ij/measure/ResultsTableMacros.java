@@ -5,6 +5,8 @@ import ij.plugin.*;
 import ij.*;
 import ij.gui.*;
 import ij.text.*;
+import ij.util.OsChecker;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -54,7 +56,7 @@ public class ResultsTableMacros implements Runnable, DialogListener, ActionListe
 		ta.addKeyListener(this);
 
 		Panel panel = new Panel();
-		if (IJ.isMacOSX())
+		if (OsChecker.isMacOSX())
 			panel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		runButton = new Button("Run");
 		runButton.addActionListener(this);
@@ -80,8 +82,8 @@ public class ResultsTableMacros implements Runnable, DialogListener, ActionListe
 				"<li>The variable <b>row</b> (row index) is pre-defined.\n"+
 				"<li>String operations are supported for the 'Label' column only (if<br>enabled"+
 				"with Analyze&gt;Set Measurements&gt;Display Label)."+				
-				"<li>Click \"<b>Run</b>\", or press "+(IJ.isMacOSX()?"cmd":"ctrl") + "-r, to apply the macro code to the table."+
-				"<li>Select a line and press "+(IJ.isMacOSX()?"cmd":"ctrl") + "-r to apply a line of macro code."+
+				"<li>Click \"<b>Run</b>\", or press "+(OsChecker.isMacOSX()?"cmd":"ctrl") + "-r, to apply the macro code to the table."+
+				"<li>Select a line and press "+(OsChecker.isMacOSX()?"cmd":"ctrl") + "-r to apply a line of macro code."+
 				"<li>Click \"<b>Reset</b>\" to revert to the original version of the table."+
 				"<li>The code is saved at <b>macros/TableMacro.ijm</b>, and the<br>\"Apply Macro\" command is recorded, when you click \"<b>OK</b>\"."+
 				"<li>All <b>Table.</b> macro functions (such as Table.size) refer to the<br>current (frontmost) table unless the table name is given."+

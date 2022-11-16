@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import ij.*;
 import ij.plugin.*;
+import ij.util.OsChecker;
 
 /**  This is a closeable window that plugins can extend. */
 public class PlugInFrame extends Frame implements PlugIn, WindowListener, FocusListener {
@@ -16,8 +17,8 @@ public class PlugInFrame extends Frame implements PlugIn, WindowListener, FocusL
 		ImageJ ij = IJ.getInstance();
 		addWindowListener(this);
  		addFocusListener(this);
-		if (IJ.isLinux()) setBackground(ImageJ.backgroundColor);
-		if (ij!=null && !IJ.isMacOSX()) {
+		if (OsChecker.isLinux()) setBackground(ImageJ.backgroundColor);
+		if (ij!=null && !OsChecker.isMacOSX()) {
 			Image img = ij.getIconImage();
 			if (img!=null)
 				try {setIconImage(img);} catch (Exception e) {}

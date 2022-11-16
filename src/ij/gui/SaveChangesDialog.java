@@ -1,5 +1,7 @@
 package ij.gui;
 import ij.IJ;
+import ij.util.OsChecker;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -38,7 +40,7 @@ public class SaveChangesDialog extends Dialog implements ActionListener, KeyList
 		dontSave = new Button("Don't Save");
 		dontSave.addActionListener(this);
 		dontSave.addKeyListener(this);
-		if (ij.IJ.isMacintosh()) {
+		if (OsChecker.isMacintosh()) {
 			panel.add(dontSave);
 			panel.add(cancel);
 			panel.add(save);
@@ -48,7 +50,7 @@ public class SaveChangesDialog extends Dialog implements ActionListener, KeyList
 			panel.add(cancel);
 		}
 		add("South", panel);
-		if (ij.IJ.isMacintosh())
+		if (OsChecker.isMacintosh())
 			setResizable(false);
 		pack();
 		GUI.centerOnImageJScreen(this);

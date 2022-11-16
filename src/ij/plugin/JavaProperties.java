@@ -1,6 +1,8 @@
 package ij.plugin;
 import ij.*;
 import ij.text.*;
+import ij.util.JavaChecker;
+import ij.util.OsChecker;
 import ij.io.OpenDialog;
 import ij.gui.GUI;
 import java.awt.*;
@@ -15,7 +17,7 @@ public class JavaProperties implements PlugIn {
 	public void run(String arg) {
 		show("java.version");
 		show("java.vendor");
-		if (IJ.isMacintosh()) show("mrj.version");
+		if (OsChecker.isMacintosh()) show("mrj.version");
 		show("os.name");
 		show("os.version");
 		show("os.arch");
@@ -72,13 +74,13 @@ public class JavaProperties implements PlugIn {
 			list.add("  *Custom preferences*: "+path);
 		list.add("  IJ.getVersion: "+IJ.getVersion());
 		list.add("  IJ.getFullVersion: "+IJ.getFullVersion());
-		list.add("  IJ.javaVersion: "+IJ.javaVersion());
-		list.add("  IJ.isJava18(): "+IJ.isJava18());
-		list.add("  IJ.isLinux: "+IJ.isLinux());
-		list.add("  IJ.isMacintosh: "+IJ.isMacintosh());
-		list.add("  IJ.isMacOSX: "+IJ.isMacOSX());
-		list.add("  IJ.isWindows: "+IJ.isWindows());
-		list.add("  IJ.is64Bit: "+IJ.is64Bit());
+		list.add("  IJ.javaVersion: "+JavaChecker.javaVersion());
+		list.add("  IJ.isJava18(): "+JavaChecker.isJava18());
+		list.add("  IJ.isLinux: "+OsChecker.isLinux());
+		list.add("  IJ.isMacintosh: "+OsChecker.isMacintosh());
+		list.add("  IJ.isMacOSX: "+OsChecker.isMacOSX());
+		list.add("  IJ.isWindows: "+OsChecker.isWindows());
+		list.add("  IJ.is64Bit: "+OsChecker.is64Bit());
 		list.add("");
 		list.add("  IJ.getDir(\"imagej\"): "+ IJ.getDir("imagej"));
 		list.add("  IJ.getDir(\"home\"): "+ IJ.getDir("home"));

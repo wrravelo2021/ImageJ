@@ -242,7 +242,7 @@ public class Macro_Runner implements PlugIn {
 		as a string, the last expression evaluated by the script. */
 	public String runJavaScript(String script, String arg) {
 		Object js = null;
-		if (!(IJ.isMacOSX()&&!IJ.is64Bit())) {
+		if (!(OsChecker.isMacOSX()&&!OsChecker.is64Bit())) {
 			// Use JavaScript engine built into Java 6 and later.
 			js = IJ.runPlugIn("ij.plugin.JavaScriptEvaluator", "");
 		} else {
@@ -254,7 +254,7 @@ public class Macro_Runner implements PlugIn {
 			}
 		}
 		script = Editor.getJSPrefix(arg)+script;
-		if (IJ.isJava18())
+		if (JavaChecker.isJava18())
 			script = "load(\"nashorn:mozilla_compat.js\");" + script;
 		if (js!=null)
 			return runScript(js, script, arg);

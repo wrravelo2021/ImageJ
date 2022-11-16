@@ -1,5 +1,7 @@
 package ij.gui;
 import ij.*;
+import ij.util.OsChecker;
+
 import java.awt.*;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -14,7 +16,7 @@ public class GUI {
 	private static Color scrollbarBackground = new Color(245,245,245);
 
 	static {
-		if (IJ.isWindows()) {
+		if (OsChecker.isWindows()) {
 			String osname = System.getProperty("os.name");
 			isWindows8 = osname.contains("unknown") || osname.contains("8");
 		}
@@ -254,7 +256,7 @@ public class GUI {
 	 * color to be almost identical.
 	*/
 	public static final void fixScrollbar(Scrollbar sb) {
-		if (IJ.isWindows())
+		if (OsChecker.isWindows())
 			sb.setBackground(scrollbarBackground);
 	}
 	

@@ -5,6 +5,7 @@ import java.awt.image.*;
 import ij.*;
 import ij.plugin.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.gui.*;
 import ij.measure.*;
 
@@ -211,7 +212,7 @@ public class ContrastAdjuster extends PlugInDialog implements Runnable,
 				font = new Font("SansSerif", Font.PLAIN, (int)(12*scale));
 			setFont(font);
 		}
-		int trim = IJ.isMacOSX()?20:0;
+		int trim = OsChecker.isMacOSX()?20:0;
 		panel = new Panel();
 		panel.setLayout(new GridLayout(0,2, 0, 0));
 		autoB = new TrimmedButton("Auto",trim);
@@ -242,7 +243,7 @@ public class ContrastAdjuster extends PlugInDialog implements Runnable,
 			setLocation(loc);
 		else
 			GUI.centerOnImageJScreen(this);
-		if (IJ.isMacOSX()) setResizable(false);
+		if (OsChecker.isMacOSX()) setResizable(false);
 		show();
 
 		thread = new Thread(this, "ContrastAdjuster");
@@ -263,10 +264,10 @@ public class ContrastAdjuster extends PlugInDialog implements Runnable,
 	}
 
 	void addLabel(String text, Label label2) {
-		if (label2==null&&IJ.isMacOSX()) text += "    ";
+		if (label2==null&&OsChecker.isMacOSX()) text += "    ";
 		panel = new Panel();
 		c.gridy = y++;
-		int bottomInset = IJ.isMacOSX()?4:0;
+		int bottomInset = OsChecker.isMacOSX()?4:0;
 		c.insets = new Insets(0, 10, bottomInset, 0);
 		gridbag.setConstraints(panel, c);
         panel.setLayout(new FlowLayout(label2==null?FlowLayout.CENTER:FlowLayout.LEFT, 0, 0));
@@ -1346,7 +1347,7 @@ class ContrastPlot extends Canvas implements MouseListener {
 } // ContrastPlot class
 
 class TrimmedLabel extends Label {
-	int trim = IJ.isMacOSX()?0:6;
+	int trim = OsChecker.isMacOSX()?0:6;
 
     public TrimmedLabel(String title) {
         super(title);

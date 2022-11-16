@@ -1,6 +1,7 @@
 package ij.plugin;
 import ij.*;
 import ij.gui.*;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import java.io.*;
 import java.net.*;
@@ -37,7 +38,7 @@ public class ImageJ_Updater implements PlugIn {
 		if (!file.canWrite()) {
 			String path = file.getPath();
 			String msg = "No write access: "+path;
-			if (IJ.isMacOSX() && path!=null && path.startsWith("/private/var/folders/")) {
+			if (OsChecker.isMacOSX() && path!=null && path.startsWith("/private/var/folders/")) {
 				msg = "ImageJ is in a read-only folder due to Path Randomization.\n"
 				+ "To work around this problem, drag ImageJ.app to another\n"
 				+ "folder and then (optionally) drag it back.";

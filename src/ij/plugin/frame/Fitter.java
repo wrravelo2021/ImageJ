@@ -67,7 +67,7 @@ public class Fitter extends PlugInFrame implements PlugIn, ItemListener, ActionL
 			text += IJ.d2s(dx[i],2)+"  "+IJ.d2s(dy[i],2)+"\n";
 		textArea = new TextArea("",15,30,TextArea.SCROLLBARS_VERTICAL_ONLY);
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-		if (IJ.isLinux()) textArea.setBackground(Color.white);
+		if (OsChecker.isLinux()) textArea.setBackground(Color.white);
 		textArea.append(text);
 		add("Center", textArea);
 		GUI.scale(this);
@@ -319,7 +319,7 @@ public class Fitter extends PlugInFrame implements PlugIn, ItemListener, ActionL
 		int start = textArea.getSelectionStart( );
 		int end = textArea.getSelectionEnd( );
 		textArea.replaceRange(s, start, end);
-		if (IJ.isMacOSX())
+		if (OsChecker.isMacOSX())
 			textArea.setCaretPosition(start+s.length());
     }
     

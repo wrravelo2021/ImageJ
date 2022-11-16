@@ -3,6 +3,7 @@ import ij.*;
 import ij.gui.*;
 import ij.process.*;
 import ij.measure.*;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import ij.io.FileOpener;
 import java.awt.*;
@@ -187,7 +188,7 @@ class SetScaleDialog extends GenericDialog {
 			((TextField)stringField.elementAt(0)).setText("pixel");
 			setScale(NO_SCALE);
 			scaleChanged = true;
-			if (IJ.isMacOSX())
+			if (OsChecker.isMacOSX())
 				{setVisible(false); setVisible(true);}
 		}
 	}

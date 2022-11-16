@@ -6,6 +6,7 @@ import ij.plugin.frame.*;
 import ij.plugin.*;
 import ij.text.TextWindow;
 import ij.util.Java2;
+import ij.util.JavaChecker;
 import ij.measure.ResultsTable;
 import ij.macro.Interpreter;
 import ij.util.Tools;
@@ -496,7 +497,7 @@ public class Opener {
 	public static String updateUrl(String url) {
 		if (url==null || !url.contains("nih.gov"))
 			return url;
-		if (IJ.isJava18())
+		if (JavaChecker.isJava18())
 			url = url.replace("http:", "https:");
 		else {
 			url = url.replace("imagej.nih.gov/ij", "imagej.net");

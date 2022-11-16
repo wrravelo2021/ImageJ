@@ -77,7 +77,7 @@ public class Menus {
 	private static Vector macroFiles;  // Macros and scripts in the plugins folder
 	private static int userPluginsIndex; // First user plugin or submenu in Plugins menu
 	private static boolean addSorted;
-	private static int defaultFontSize = IJ.isWindows()?15:0;
+	private static int defaultFontSize = OsChecker.isWindows()?15:0;
 	private static int fontSize = Prefs.getInt(Prefs.MENU_SIZE, defaultFontSize);
 	private static Font menuFont;
 	private static double scale = 1.0;
@@ -215,7 +215,7 @@ public class Menus {
 		analyzeMenu.addSeparator();
 		addPlugInItem(analyzeMenu, "Set Scale...", "ij.plugin.filter.ScaleDialog", 0, false);
 		addPlugInItem(analyzeMenu, "Calibrate...", "ij.plugin.filter.Calibrator", 0, false);
-		if (IJ.isMacOSX()) {
+		if (OsChecker.isMacOSX()) {
 			addPlugInItem(analyzeMenu, "Histogram", "ij.plugin.Histogram", 0, false);
 			shortcuts.put(Integer.valueOf(KeyEvent.VK_H),"Histogram");
 		} else
@@ -230,7 +230,7 @@ public class Menus {
 
 		Menu window = getMenu("Window");
 		addPlugInItem(window, "Show All", "ij.plugin.WindowOrganizer(\"show\")", KeyEvent.VK_CLOSE_BRACKET, false);
-		String key = IJ.isWindows()?"enter":"return";
+		String key = OsChecker.isWindows()?"enter":"return";
 		addPlugInItem(window, "Main Window ["+key+"]", "ij.plugin.WindowOrganizer(\"imagej\")", 0, false);
 		addPlugInItem(window, "Put Behind [tab]", "ij.plugin.Commands(\"tab\")", 0, false);
 		addPlugInItem(window, "Cascade", "ij.plugin.WindowOrganizer(\"cascade\")", 0, false);
@@ -488,7 +488,7 @@ public class Menus {
 		if (applet==null && f.exists() && f.isDirectory())
 			list = f.list();
 		if (list==null) return;
-		if (IJ.isLinux() || IJ.isMacOSX())
+		if (OsChecker.isLinux() || OsChecker.isMacOSX())
 			Arrays.sort(list);
 		submenu.addSeparator();
  		for (int i=0; i<list.length; i++) {
@@ -1648,7 +1648,7 @@ public class Menus {
 		if (menuFont==null) {
 			int size = fontSize==0?13:fontSize;
 			size = (int)Math.round(size*scale);
-			if (IJ.isWindows() && scale>1.0 && size>17)
+			if (OsChecker.isWindows() && scale>1.0 && size>17)
 				size = 17;  // Java resets size to 12 if you try to set it to 18 or greater
 			menuFont =  new Font("SanSerif", Font.PLAIN, size);
 		}

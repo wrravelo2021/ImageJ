@@ -1,6 +1,7 @@
 package ij.plugin;
 import ij.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.gui.*;
 import java.awt.*;
 import ij.io.*;
@@ -22,7 +23,7 @@ import java.awt.image.*;
 		text[1] = "Wayne Rasband and contributors";
 		text[2] = "National Institutes of Health, USA";
 		text[3] = IJ.URL;
-		text[4] = "Java "+System.getProperty("java.version")+(IJ.is64Bit()?" (64-bit)":" (32-bit)");
+		text[4] = "Java "+System.getProperty("java.version")+(OsChecker.is64Bit()?" (64-bit)":" (32-bit)");
 		text[5] = IJ.freeMemory();
 		text[6] = "ImageJ is in the public domain";
 		ImageProcessor ip = null;

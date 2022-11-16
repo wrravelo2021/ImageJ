@@ -223,7 +223,7 @@ public class PlotWindow extends ImageWindow implements ActionListener, ItemListe
 	/** Displays the plot. */
 	public void draw() {
 		Panel bottomPanel = new Panel();
-		int hgap = IJ.isMacOSX()?1:5;
+		int hgap = OsChecker.isMacOSX()?1:5;
 
 		list = new Button(" List ");
 		list.addActionListener(this);

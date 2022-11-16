@@ -4,6 +4,7 @@ import ij.process.*;
 import ij.gui.*;
 import ij.plugin.Macro_Runner;
 import ij.plugin.frame.*;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import ij.text.*;
 import ij.measure.ResultsTable;
@@ -2094,7 +2095,7 @@ public class Interpreter implements MacroConstants {
 		}
 		if (func.unUpdatedTable!=null)
 			func.unUpdatedTable.show(func.unUpdatedTable.getTitle());
-		if (IJ.isMacOSX() && selectCount>0 && debugger==null) {
+		if (OsChecker.isMacOSX() && selectCount>0 && debugger==null) {
 			Frame frame = WindowManager.getFrontWindow();
 			if (frame!=null && (frame instanceof ImageWindow))
 				ImageWindow.setImageJMenuBar((ImageWindow)frame);

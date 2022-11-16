@@ -2,6 +2,7 @@ package ij.plugin;
 import java.awt.*;
 import ij.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.gui.*;
 
 /** Converts a 2 or 3 slice stack, or a hyperstack, to RGB. */
@@ -267,7 +268,7 @@ public class RGBStackConverter implements PlugIn, DialogListener {
 	}
 
 	public boolean dialogItemChanged(GenericDialog gd, AWTEvent e) {
-		if (IJ.isMacOSX()) IJ.wait(100);
+		if (OsChecker.isMacOSX()) IJ.wait(100);
 		if (slices1!=1) slices2 = gd.getNextBoolean()?slices1:1;
 		if (frames1!=1) frames2 = gd.getNextBoolean()?frames1:1;
 		keep = gd.getNextBoolean();

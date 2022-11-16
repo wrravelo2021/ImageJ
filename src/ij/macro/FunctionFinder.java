@@ -2,6 +2,7 @@ package ij.macro;
 import ij.*;
 import ij.plugin.*;
 import ij.plugin.frame.*;
+import ij.util.OsChecker;
 import ij.gui.GUI;
 import java.awt.*;
 import java.awt.event.*;
@@ -124,7 +125,7 @@ public class FunctionFinder implements TextListener,  WindowListener, KeyListene
 			try {
 				ta.replaceRange(arg.substring(0,arg.length()), start, end);
 			} catch (Exception e) { }
-			if (IJ.isMacOSX())
+			if (OsChecker.isMacOSX())
 				ta.setCaretPosition(start+arg.length());
 		} catch (Exception e) { }
 	}

@@ -1,5 +1,7 @@
 package ij.gui;
 import ij.*;
+import ij.util.OsChecker;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -41,7 +43,7 @@ public class YesNoCancelDialog extends Dialog implements ActionListener, KeyList
 		yesB.addKeyListener(this);
 		noB.addKeyListener(this);
 		cancelB.addKeyListener(this);
-		if (IJ.isWindows() || Prefs.dialogCancelButtonOnRight) {
+		if (OsChecker.isWindows() || Prefs.dialogCancelButtonOnRight) {
 			panel.add(yesB);
 			panel.add(noB);
 			panel.add(cancelB);
@@ -50,7 +52,7 @@ public class YesNoCancelDialog extends Dialog implements ActionListener, KeyList
 			panel.add(cancelB);
 			panel.add(yesB);
 		}
-		if (IJ.isMacintosh())
+		if (OsChecker.isMacintosh())
 			setResizable(false);
 		add("South", panel);
 		addWindowListener(this);

@@ -8,6 +8,7 @@ import ij.process.*;
 import ij.gui.*;
 import ij.measure.*;
 import ij.plugin.frame.Recorder;
+import ij.util.OsChecker;
 import ij.util.Tools;
 
 /** Adjusts the width of line selections.  */
@@ -38,7 +39,7 @@ public class LineWidthAdjuster extends PlugInFrame implements PlugIn,
 		slider.setFocusable(false); // prevents blinking on Windows
 
 		Panel panel = new Panel();
-		int margin = IJ.isMacOSX()?5:0;
+		int margin = OsChecker.isMacOSX()?5:0;
 		GridBagLayout grid = new GridBagLayout();
 		GridBagConstraints c  = new GridBagConstraints();
 		panel.setLayout(grid);

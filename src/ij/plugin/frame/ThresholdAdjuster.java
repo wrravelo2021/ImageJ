@@ -7,6 +7,7 @@ import ij.plugin.*;
 import ij.process.*;
 import ij.gui.*;
 import ij.measure.*;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import ij.plugin.frame.Recorder;
 import ij.plugin.filter.*;
@@ -129,7 +130,7 @@ public class ThresholdAdjuster extends PlugInDialog implements PlugIn, Measureme
 		c.gridx = 0;
 		c.gridy = y++;
 		c.gridwidth = 1;
-		c.weightx = IJ.isMacintosh()?90:100;
+		c.weightx = OsChecker.isMacintosh()?90:100;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets(1, 10, 0, 0);
 		add(minSlider, c);
@@ -142,7 +143,7 @@ public class ThresholdAdjuster extends PlugInDialog implements PlugIn, Measureme
 		// minThreshold slider label
 		c.gridx = 1;
 		c.gridwidth = 1;
-		c.weightx = IJ.isMacintosh()?10:0;
+		c.weightx = OsChecker.isMacintosh()?10:0;
 		c.insets = new Insets(5, 0, 0, 10);
 		String text = "000000";
 		int columns = 4;
@@ -232,9 +233,9 @@ public class ThresholdAdjuster extends PlugInDialog implements PlugIn, Measureme
 		add(panel, c);
 
 		// buttons
-		int trim = IJ.isMacOSX()?11:0;
+		int trim = OsChecker.isMacOSX()?11:0;
 		panel = new Panel();
-		int hgap = IJ.isMacOSX()?1:5;
+		int hgap = OsChecker.isMacOSX()?1:5;
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT,hgap,0));
 		autoB = new TrimmedButton("Auto",trim);
 		autoB.addActionListener(this);
@@ -266,7 +267,7 @@ public class ThresholdAdjuster extends PlugInDialog implements PlugIn, Measureme
 			setLocation(loc);
 		else
 			GUI.centerOnImageJScreen(this);
-		if (IJ.isMacOSX()) setResizable(false);
+		if (OsChecker.isMacOSX()) setResizable(false);
 		show();
 
 		thread = new Thread(this, "ThresholdAdjuster");

@@ -7,6 +7,7 @@ import javax.swing.filechooser.*;
 import ij.*;
 import ij.plugin.frame.Recorder;
 import ij.util.Java2;
+import ij.util.OsChecker;
 import ij.macro.Interpreter;
 
 /** This class displays a dialog window from 
@@ -191,7 +192,7 @@ public class SaveDialog {
 		if (defaultName!=null)
 			fd.setFile(defaultName);
 		if (defaultDir!=null) {
-			if (IJ.isWindows() && defaultDir.contains("/")) {
+			if (OsChecker.isWindows() && defaultDir.contains("/")) {
 				File f = new File(defaultDir);
 				if (f.isDirectory())
 					try {
@@ -207,7 +208,7 @@ public class SaveDialog {
 			if (".raw".equals(ext))
 				ext = null;
 			name = setExtension(name, ext);
-			boolean dialog = name!=null && !name.equals(origName) && IJ.isMacOSX() && !IJ.isMacro();
+			boolean dialog = name!=null && !name.equals(origName) && OsChecker.isMacOSX() && !IJ.isMacro();
 			if (dialog) {
 				File f = new File( fd.getDirectory()+getFileName());
 				if (!f.exists()) dialog = false;

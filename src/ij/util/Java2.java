@@ -41,7 +41,7 @@ public class Java2 {
 	
 	/** Sets the Swing look and feel to the system look and feel (Windows only). */
 	public static void setSystemLookAndFeel() {
-		if (!IJ.isWindows())
+		if (!OsChecker.isWindows())
 			return;
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -50,7 +50,7 @@ public class Java2 {
 
 	/** Sets the Swing look and feel. */
 	public static void setLookAndFeel(LookAndFeel newLookAndFeel) {
-		if (!IJ.isWindows() || newLookAndFeel==null)
+		if (!OsChecker.isWindows() || newLookAndFeel==null)
 			return;
 		try {
 			UIManager.setLookAndFeel(newLookAndFeel);
@@ -59,7 +59,7 @@ public class Java2 {
 	
 	/** Returns the current Swing look and feel or null. */
 	public static LookAndFeel getLookAndFeel() {
-		if (!IJ.isWindows())
+		if (!OsChecker.isWindows())
 			return null;
 		return UIManager.getLookAndFeel();
 	}

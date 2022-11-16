@@ -4,6 +4,7 @@ import ij.process.*;
 import ij.gui.*;
 import ij.io.Opener;
 import ij.text.TextWindow;
+import ij.util.OsChecker;
 import ij.measure.ResultsTable;
 import ij.plugin.frame.Editor;
 import java.awt.Desktop;
@@ -118,11 +119,11 @@ public class SimpleCommands implements PlugIn {
 		
 	private void installation() {
 		String url = IJ.URL+"/docs/install/";
-		if (IJ.isMacintosh())
+		if (OsChecker.isMacintosh())
 			url += "osx.html";
-		else if (IJ.isWindows())
+		else if (OsChecker.isWindows())
 			url += "windows.html";
-		else if (IJ.isLinux())
+		else if (OsChecker.isLinux())
 			url += "linux.html";
 		IJ.runPlugIn("ij.plugin.BrowserLauncher", url);
 	}
@@ -245,7 +246,7 @@ public class SimpleCommands implements PlugIn {
 		}
 		if (IJ.debugMode) IJ.log("Show Folder: arg="+arg+", path="+path);
 		String msg1 = "";
-		if (IJ.isLinux()) try {
+		if (OsChecker.isLinux()) try {
 			if (IJ.debugMode) IJ.log("  trying xdg-open "+path);
 			Runtime.getRuntime().exec(new String[] {"xdg-open", path} );
 			return;

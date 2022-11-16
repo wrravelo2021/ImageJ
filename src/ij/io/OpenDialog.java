@@ -3,6 +3,8 @@ import ij.*;
 import ij.gui.*;
 import ij.plugin.frame.Recorder;
 import ij.util.Java2;
+import ij.util.JavaChecker;
+import ij.util.OsChecker;
 import ij.macro.Interpreter;
 import java.awt.*;
 import java.io.*;
@@ -160,7 +162,7 @@ public class OpenDialog {
 			if (sharedFrame==null) sharedFrame = new Frame();
 			parent = sharedFrame;
 		}
-		if (IJ.isMacOSX() && IJ.isJava18()) {
+		if (OsChecker.isMacOSX() && JavaChecker.isJava18()) {
 			ImageJ ij = IJ.getInstance();
 			if (ij!=null && ij.isActive())
 				parent = ij;
@@ -169,7 +171,7 @@ public class OpenDialog {
 		}
 		FileDialog fd = new FileDialog(parent, title);
 		if (path!=null) {
-			if (IJ.isWindows() && path.contains("/"))
+			if (OsChecker.isWindows() && path.contains("/"))
 				path = path.replaceAll("/","\\\\"); // work around FileDialog.setDirectory() bug
 			fd.setDirectory(path);
 		}
@@ -178,7 +180,7 @@ public class OpenDialog {
 		fd.show();
 		name = fd.getFile();
 		if (name==null) {
-			if (IJ.isMacOSX())
+			if (OsChecker.isMacOSX())
 				System.setProperty("apple.awt.fileDialogForDirectories", "false");
 			Macro.abort();
 		} else

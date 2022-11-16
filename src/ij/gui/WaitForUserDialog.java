@@ -1,6 +1,8 @@
 package ij.gui;
 import ij.*;
 import ij.plugin.frame.RoiManager;
+import ij.util.OsChecker;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.*;
@@ -26,8 +28,8 @@ public class WaitForUserDialog extends Dialog implements ActionListener, KeyList
 		if (text!=null && text.startsWith("IJ: "))
 			text = text.substring(4);
 		label = new MultiLineLabel(text, 175);
-		if (!IJ.isLinux()) label.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		if (IJ.isMacOSX()) {
+		if (!OsChecker.isLinux()) label.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		if (OsChecker.isMacOSX()) {
 			RoiManager rm = RoiManager.getInstance();
 			if (rm!=null) rm.runCommand("enable interrupts");
 		}

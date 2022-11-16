@@ -2,6 +2,7 @@ package ij.plugin;
 import ij.*;
 import ij.gui.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.io.*;
 import ij.plugin.filter.*;
 import ij.plugin.frame.*;
@@ -31,20 +32,20 @@ public class Options implements PlugIn {
 				
 	// Miscellaneous Options
 	void miscOptions() {
-		String key = IJ.isMacintosh()?"command":"control";
+		String key = OsChecker.isMacintosh()?"command":"control";
 		GenericDialog gd = new GenericDialog("Miscellaneous Options");
 		gd.addStringField("Divide by zero value:", ""+FloatBlitter.divideByZeroValue, 10);
 		gd.addCheckbox("Use pointer cursor", Prefs.usePointerCursor);
 		gd.addCheckbox("Hide \"Process Stack?\" dialog", IJ.hideProcessStackDialog);
 		gd.addCheckbox("Require "+key+" key for shortcuts", Prefs.requireControlKey);
 		gd.addCheckbox("Move isolated plugins to Misc. menu", Prefs.moveToMisc);
-		if (!IJ.isMacOSX())
+		if (!OsChecker.isMacOSX())
 			gd.addCheckbox("Run single instance listener", Prefs.runSocketListener);
 		gd.addCheckbox("Enhanced line tool", Prefs.enhancedLineTool);
 		gd.addCheckbox("Reverse CZT order of \">\" and \"<\"", Prefs.reverseNextPreviousOrder);
-		if (IJ.isMacOSX())
+		if (OsChecker.isMacOSX())
 			gd.addCheckbox("Don't set Mac menu bar", !Prefs.setIJMenuBar);
-		if (IJ.isLinux())
+		if (OsChecker.isLinux())
 			gd.addCheckbox("Save window locations", !Prefs.doNotSaveWindowLocations);
 		gd.addCheckbox("Non-blocking filter dialogs", Prefs.nonBlockingFilterDialogs);
 		gd.addCheckbox("Debug mode", IJ.debugMode);
@@ -74,13 +75,13 @@ public class Options implements PlugIn {
 		IJ.hideProcessStackDialog = gd.getNextBoolean();
 		Prefs.requireControlKey = gd.getNextBoolean();
 		Prefs.moveToMisc = gd.getNextBoolean();
-		if (!IJ.isMacOSX())
+		if (!OsChecker.isMacOSX())
 			Prefs.runSocketListener = gd.getNextBoolean();
 		Prefs.enhancedLineTool = gd.getNextBoolean();
 		Prefs.reverseNextPreviousOrder = gd.getNextBoolean();
-		if (IJ.isMacOSX())
+		if (OsChecker.isMacOSX())
 			Prefs.setIJMenuBar = !gd.getNextBoolean();
-		if (IJ.isLinux())
+		if (OsChecker.isLinux())
 			Prefs.doNotSaveWindowLocations = !gd.getNextBoolean();
 		Prefs.nonBlockingFilterDialogs = gd.getNextBoolean();
 		IJ.setDebugMode(gd.getNextBoolean());
@@ -108,7 +109,7 @@ public class Options implements PlugIn {
 		gd.addNumericField("GIF and PNG transparent index:", Prefs.getTransparentIndex(), 0, 3, "");
 		gd.addStringField("File extension for tables (.csv, .tsv or .txt):", Prefs.defaultResultsExtension(), 4);
 		gd.addCheckbox("Use JFileChooser to open/save", Prefs.useJFileChooser);
-		if (!IJ.isMacOSX())
+		if (!OsChecker.isMacOSX())
 			gd.addCheckbox("Use_file chooser to import sequences", Prefs.useFileChooser);
 		gd.addCheckbox("Save TIFF and raw in Intel byte order", Prefs.intelByteOrder);
 		gd.addCheckbox("Skip dialog when opening .raw files", Prefs.skipRawDialog);
@@ -141,7 +142,7 @@ public class Options implements PlugIn {
 		Prefs.useJFileChooser = gd.getNextBoolean();
 		if (Prefs.useJFileChooser!=useJFileChooser2)
 			Prefs.jFileChooserSettingChanged = true;
-		if (!IJ.isMacOSX())
+		if (!OsChecker.isMacOSX())
 			Prefs.useFileChooser = gd.getNextBoolean();
 		Prefs.intelByteOrder = gd.getNextBoolean();
 		Prefs.skipRawDialog = gd.getNextBoolean();

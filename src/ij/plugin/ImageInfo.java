@@ -4,6 +4,8 @@ import ij.gui.*;
 import ij.process.*;
 import ij.measure.*;
 import ij.io.*;
+import ij.util.JavaChecker;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import ij.plugin.frame.Editor;
 import ij.plugin.filter.Analyzer;
@@ -40,7 +42,7 @@ public class ImageInfo implements PlugIn {
 		Dimension screen = IJ.getScreenSize();
 		s += "ImageJ home: "+IJ.getDir("imagej")+"\n";
 		s += "Java home: "+System.getProperty("java.home")+"\n";
-		s += "Java version: "+IJ.javaVersion()+"\n";
+		s += "Java version: "+JavaChecker.javaVersion()+"\n";
 		s += "Screen size: "+screen.width+"x"+screen.height+"\n";
 		s += "GUI scale: "+IJ.d2s(Prefs.getGuiScale(),2)+"\n";
 		//s += "Active window: "+WindowManager.getActiveWindow()+"\n";
@@ -362,7 +364,7 @@ public class ImageInfo implements PlugIn {
 			Rectangle bounds = GUI.getScreenBounds(win);
 			s += "Screen location: "+(loc.x-bounds.x)+","+(loc.y-bounds.y)+" ("+bounds.width+"x"+bounds.height+")\n";
 		}
-		if (IJ.isMacOSX()) {
+		if (OsChecker.isMacOSX()) {
 			String time = " ("+ImageWindow.setMenuBarTime+"ms)";
 			s += "SetMenuBarCount: "+Menus.setMenuBarCount+time+"\n";
 		}

@@ -4,6 +4,8 @@ import ij.plugin.frame.Recorder;
 import ij.plugin.ScreenGrabber;
 import ij.plugin.filter.PlugInFilter;
 import ij.plugin.filter.PlugInFilterRunner;
+import ij.util.JavaChecker;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import ij.macro.*;
 import ij.io.OpenDialog;
@@ -181,7 +183,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 			defaultValues = new Vector(5);
 			defaultText = new Vector(5);
 		}
-		if (IJ.isWindows()) columns -= 2;
+		if (OsChecker.isWindows()) columns -= 2;
 		if (columns<1) columns = 1;
 		boolean scientificNotationAsNeeded = false;
 		if (digits<0) {
@@ -194,7 +196,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 		if (Double.isNaN(defaultValue))
 			defaultString = "";
 		TextField tf = newTextField(defaultString, columns);
-		if (IJ.isLinux()) tf.setBackground(Color.white);
+		if (OsChecker.isLinux()) tf.setBackground(Color.white);
 		tf.addActionListener(this);
 		tf.addTextListener(this);
 		tf.addFocusListener(this);
@@ -221,7 +223,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 	}
 
 	private Label makeLabel(String label) {
-		if (IJ.isMacintosh())
+		if (OsChecker.isMacintosh())
 			label += " ";
 		return new Label(label);
 	}
@@ -290,7 +292,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 		}
 
 		TextField tf = newTextField(defaultText, columns);
-		if (IJ.isLinux()) tf.setBackground(Color.white);
+		if (OsChecker.isLinux()) tf.setBackground(Color.white);
 		tf.setEchoChar(echoChar);
 		echoChar = 0;
 		tf.addActionListener(this);
@@ -336,7 +338,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 		TextField text = (TextField)stringField.lastElement();
 		GridBagLayout layout = (GridBagLayout)getLayout();
 		GridBagConstraints constraints = layout.getConstraints(text);
-		Button button = new TrimmedButton("Browse",IJ.isMacOSX()?10:0);
+		Button button = new TrimmedButton("Browse",OsChecker.isMacOSX()?10:0);
 		BrowseButtonListener listener = new BrowseButtonListener(label, text, "dir");
 		button.addActionListener(listener);
 		Panel panel = new Panel();
@@ -367,7 +369,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 		TextField text = (TextField)stringField.lastElement();
 		GridBagLayout layout = (GridBagLayout)getLayout();
 		GridBagConstraints constraints = layout.getConstraints(text);
-		Button button = new TrimmedButton("Browse",IJ.isMacOSX()?10:0);
+		Button button = new TrimmedButton("Browse",OsChecker.isMacOSX()?10:0);
 		BrowseButtonListener listener = new BrowseButtonListener(label, text, "file");
 		button.addActionListener(listener);
 		Panel panel = new Panel();
@@ -605,7 +607,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 				cb.addItemListener(this);
 				if (Recorder.record || macro)
 					saveLabel(cb, labels[i1]);
-				if (IJ.isLinux()) {
+				if (OsChecker.isLinux()) {
 					Panel panel2 = new Panel();
 					panel2.setLayout(new BorderLayout());
 					panel2.add("West", cb);
@@ -774,13 +776,13 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 		}
 		Font font = new Font("SansSerif", Font.PLAIN, (int)(14*Prefs.getGuiScale()));
 		textArea1 = new TextArea(text1,rows,columns,scrollbars);
-		if (IJ.isLinux()) textArea1.setBackground(Color.white);
+		if (OsChecker.isLinux()) textArea1.setBackground(Color.white);
 		textArea1.setFont(font);
 		textArea1.addTextListener(this);
 		panel.add(textArea1);
 		if (text2!=null) {
 			textArea2 = new TextArea(text2,rows,columns,scrollbars);
-			if (IJ.isLinux()) textArea2.setBackground(Color.white);
+			if (OsChecker.isLinux()) textArea2.setBackground(Color.white);
 			textArea2.setFont(font);
 			panel.add(textArea2);
 		}
@@ -890,7 +892,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 		slider.addElement(s);
 		s.addAdjustmentListener(this);
 		s.setUnitIncrement(1);
-		if (IJ.isMacOSX())
+		if (OsChecker.isMacOSX())
 			s.addKeyListener(this);
 						
 		s.addMouseWheelListener(new MouseWheelListener() {
@@ -915,7 +917,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 			defaultValues = new Vector(5);
 			defaultText = new Vector(5);
 		}
-		if (IJ.isWindows()) columns -= 2;
+		if (OsChecker.isWindows()) columns -= 2;
 		if (columns<1) columns = 1;
 		//IJ.log("scale=" + scale + ", columns=" + columns + ", digits=" + digits);
 		TextField tf = newTextField(IJ.d2s(defaultValue/scale,digits),columns);
@@ -960,7 +962,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 	}
 	
 	private TextField newTextField(String txt, int columns) {
-		if (IJ.isLinux())
+		if (OsChecker.isLinux())
 			return new TrimmedTextField(txt,columns);
 		else
 			return new TextField(txt,columns);
@@ -1449,7 +1451,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 				help.addActionListener(this);
 				help.addKeyListener(this);
 			}
-			if (IJ.isWindows() || Prefs.dialogCancelButtonOnRight) {
+			if (OsChecker.isWindows() || Prefs.dialogCancelButtonOnRight) {
 				buttons.add(okay);
 				if (no != null) buttons.add(no);;
 				if (!hideCancelButton)
@@ -1594,7 +1596,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 	public void previewRunning(boolean isRunning) {
 		if (previewCheckbox!=null) {
 			previewCheckbox.setLabel(isRunning ? previewRunning : previewLabel);
-			if (IJ.isMacOSX()) repaint();	//workaround OSX 10.4 refresh bug
+			if (OsChecker.isMacOSX()) repaint();	//workaround OSX 10.4 refresh bug
 		}
 	}
 
@@ -1698,7 +1700,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 		}
 		if (keyCode==KeyEvent.VK_ENTER && textArea1==null && okay!=null && okay.isEnabled()) {
 			wasOKed = true;
-			if (IJ.isMacOSX())
+			if (OsChecker.isMacOSX())
 				accessTextFields();
 			dispose();
 		} else if (keyCode==KeyEvent.VK_ESCAPE) {
@@ -1780,7 +1782,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 			}
 		}
 		resetCounters();
-		boolean workaroundOSXbug = IJ.isMacOSX() && okay!=null && !okay.isEnabled() && everythingOk;
+		boolean workaroundOSXbug = OsChecker.isMacOSX() && okay!=null && !okay.isEnabled() && everythingOk;
 		if (everythingOk && recorderOn)
 			optionsRecorded = true;
 		if (previewCheckbox!=null)
@@ -1801,7 +1803,7 @@ FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener {
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		if (firstPaint && IJ.isMacOSX() && IJ.isJava18()) { // fix for incompletely drawn dialogs on Macs
+		if (firstPaint && OsChecker.isMacOSX() && JavaChecker.isJava18()) { // fix for incompletely drawn dialogs on Macs
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					IJ.wait(50);

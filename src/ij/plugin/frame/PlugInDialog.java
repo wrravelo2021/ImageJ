@@ -4,22 +4,23 @@ import java.awt.event.*;
 import ij.gui.ImageWindow;
 import ij.*;
 import ij.plugin.*;
+import ij.util.OsChecker;
 
 /**  This is a non-modal dialog that plugins can extend. */
 public class PlugInDialog extends Dialog implements PlugIn, WindowListener, FocusListener {
 
 	public PlugInDialog(String title) {
-		super(IJ.isMacOSX()?IJ.getInstance():null,title);
+		super(OsChecker.isMacOSX()?IJ.getInstance():null,title);
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
 		ImageJ ij = IJ.getInstance();
-		if (IJ.isMacOSX() && ij!=null) {
+		if (OsChecker.isMacOSX() && ij!=null) {
 			ij.toFront(); // needed for keyboard shortcuts to work
 			IJ.wait(250);
 		}
 		addWindowListener(this);
  		addFocusListener(this);
-		if (IJ.isLinux()) setBackground(ImageJ.backgroundColor);
-		if (ij!=null && !IJ.isMacOSX()) {
+		if (OsChecker.isLinux()) setBackground(ImageJ.backgroundColor);
+		if (ij!=null && !OsChecker.isMacOSX()) {
 			Image img = ij.getIconImage();
 			if (img!=null)
 				try {setIconImage(img);} catch (Exception e) {}

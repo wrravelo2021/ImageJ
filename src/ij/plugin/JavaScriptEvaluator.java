@@ -1,6 +1,8 @@
 package ij.plugin;
 import ij.*;
 import ij.plugin.frame.Editor;
+import ij.util.JavaChecker;
+
 import javax.script.*;
 
 /** Implements the text editor's Macros/Run command, and the
@@ -45,7 +47,7 @@ public class JavaScriptEvaluator implements PlugIn, Runnable  {
 		result = null;
 		error = null;
 		Thread.currentThread().setContextClassLoader(IJ.getClassLoader());
-		if (IJ.isJava19())
+		if (JavaChecker.isJava19())
 			System.setProperty("nashorn.args", "--language=es6"); // Use ECMAScript 6 on Java 9
 		try {
 			if (engine==null) {
@@ -55,7 +57,7 @@ public class JavaScriptEvaluator implements PlugIn, Runnable  {
 					IJ.error("Could not find JavaScript engine");
 					return;
 				}
-				if (!IJ.isJava18()) {
+				if (!JavaChecker.isJava18()) {
 					engine.eval("function load(path) {\n"
 						+ "  importClass(Packages.sun.org.mozilla.javascript.internal.Context);\n"
 						+ "  importClass(Packages.java.io.FileReader);\n"

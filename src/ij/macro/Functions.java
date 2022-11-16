@@ -1544,7 +1544,7 @@ public class Functions implements MacroConstants, Measurements {
 		String[] list = f.list();
 		if (list==null)
 			return new Variable[0];
-		if (!IJ.isWindows())
+		if (!OsChecker.isWindows())
 			Arrays.sort(list);
     	File f2;
     	int hidden = 0;
@@ -5108,7 +5108,7 @@ public class Functions implements MacroConstants, Measurements {
 			cmd = Tools.split(arg1);
 		interp.getRightParen();
 		boolean openingDoc = cmd.length==2&&cmd[0].equals("open") || cmd.length==5&&cmd[3].equals("excel.exe");
-		if (openingDoc&&IJ.isWindows()) {
+		if (openingDoc&&OsChecker.isWindows()) {
 			String path = cmd[1];
 			if (path.startsWith("http://")||path.startsWith("HTTP://")) {
 				cmd = new String[4];

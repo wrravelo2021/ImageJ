@@ -219,7 +219,7 @@ public class ImageCanvas extends Canvas implements MouseListener, MouseMotionLis
 		painted = true;
 		Roi roi = imp.getRoi();
 		Overlay overlay = imp.getOverlay();
-		if (roi!=null || overlay!=null || showAllOverlay!=null || Prefs.paintDoubleBuffered || (IJ.isLinux() && magnification<0.25)) {
+		if (roi!=null || overlay!=null || showAllOverlay!=null || Prefs.paintDoubleBuffered || (OsChecker.isLinux() && magnification<0.25)) {
 			// Use double buffering to avoid flickering of ROIs and to work around
 			// a Linux problem with large images not showing at low magnification.
 			if (roi!=null)
@@ -788,7 +788,7 @@ public class ImageCanvas extends Canvas implements MouseListener, MouseMotionLis
 		if (maxBoundsReset) {
 			maxBoundsReset = false;
 			ImageWindow win = imp.getWindow();
-			if (win!=null && !IJ.isLinux() && win.maxBounds!=null) {
+			if (win!=null && !OsChecker.isLinux() && win.maxBounds!=null) {
 				win.setMaximizedBounds(win.maxBounds);
 				win.setMaxBoundsTime = System.currentTimeMillis();
 			}
@@ -1121,7 +1121,7 @@ public class ImageCanvas extends Canvas implements MouseListener, MouseMotionLis
 		int x = e.getX();
 		int y = e.getY();
 		flags = e.getModifiers();		
-		if (toolID!=Toolbar.MAGNIFIER && (e.isPopupTrigger()||(!IJ.isMacintosh()&&(flags&Event.META_MASK)!=0))) {
+		if (toolID!=Toolbar.MAGNIFIER && (e.isPopupTrigger()||(!OsChecker.isMacintosh()&&(flags&Event.META_MASK)!=0))) {
 			handlePopupMenu(e);
 			return;
 		}
@@ -1317,7 +1317,7 @@ public class ImageCanvas extends Canvas implements MouseListener, MouseMotionLis
 			if (roi.contains(ox,oy)) {
 				if (roiPopupMenu==null)
 					addRoiPopupMenu();
-				if (IJ.isMacOSX()) IJ.wait(10);
+				if (OsChecker.isMacOSX()) IJ.wait(10);
 				roiPopupMenu.show(this, sx, sy);
 				return;					
 			}
@@ -1325,7 +1325,7 @@ public class ImageCanvas extends Canvas implements MouseListener, MouseMotionLis
 		PopupMenu popup = Menus.getPopupMenu();
 		if (popup!=null) {
 			add(popup);
-			if (IJ.isMacOSX()) IJ.wait(10);
+			if (OsChecker.isMacOSX()) IJ.wait(10);
 			popup.show(this, sx, sy);
 		}
 	}
@@ -1602,7 +1602,7 @@ public class ImageCanvas extends Canvas implements MouseListener, MouseMotionLis
 		int oy = offScreenY(e.getY());
 		Overlay overlay = imp.getOverlay();
 		if ((overlay!=null||showAllOverlay!=null) && ox==mousePressedX && oy==mousePressedY) {
-			boolean cmdDown = IJ.isMacOSX() && e.isMetaDown();
+			boolean cmdDown = OsChecker.isMacOSX() && e.isMetaDown();
 			Roi roi = imp.getRoi();
 			if (roi!=null && roi.getBounds().width==0)
 				roi=null;

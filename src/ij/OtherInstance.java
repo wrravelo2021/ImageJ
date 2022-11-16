@@ -6,6 +6,7 @@ import ij.Prefs;
 
 import ij.io.OpenDialog;
 import ij.io.Opener;
+import ij.util.OsChecker;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -105,7 +106,7 @@ public class OtherInstance {
 				System.err.println("Java < 6 detected,"
 					+ " trying chmod 0600 " + path);
 		}
-		if (!IJ.isWindows()) {
+		if (!OsChecker.isWindows()) {
 			try {
 				String[] command = {
 					"chmod", "0600", path

@@ -26,6 +26,7 @@ package ij.plugin;
 
 import ij.*;
 import ij.text.*;
+import ij.util.OsChecker;
 import ij.plugin.frame.Editor;
 import ij.process.ImageProcessor;
 import ij.gui.GUI;
@@ -476,7 +477,7 @@ public class CommandFinder implements PlugIn, ActionListener, WindowListener, Ke
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		frame.addWindowListener(this);
-		if (imageJ != null && !IJ.isMacOSX()) {
+		if (imageJ != null && !OsChecker.isMacOSX()) {
 			Image img = imageJ.getIconImage();
 			if (img != null)
 				try {
@@ -626,7 +627,7 @@ public class CommandFinder implements PlugIn, ActionListener, WindowListener, Ke
 	}
 
 	public void windowActivated(WindowEvent e) {
-		if (IJ.isMacOSX() && frame != null)
+		if (OsChecker.isMacOSX() && frame != null)
 			frame.setMenuBar(Menus.getMenuBar());
 	}
 

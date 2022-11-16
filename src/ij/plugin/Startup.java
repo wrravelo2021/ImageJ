@@ -2,6 +2,8 @@ package ij.plugin;
 import ij.*;
 import ij.gui.*;
 import ij.macro.Interpreter;
+import ij.util.OsChecker;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -103,7 +105,7 @@ import java.util.Vector;
 		if (statement!=null) {
 			TextArea ta = gd.getTextArea1();
 			ta.insert(statement, ta.getCaretPosition());
-			if (IJ.isMacOSX()) ta.requestFocus();
+			if (OsChecker.isMacOSX()) ta.requestFocus();
 		}
 	}
 

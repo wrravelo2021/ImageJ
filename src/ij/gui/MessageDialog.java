@@ -1,5 +1,7 @@
 package ij.gui;
 import ij.*;
+import ij.util.OsChecker;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -27,7 +29,7 @@ public class MessageDialog extends Dialog implements ActionListener, KeyListener
 		label = new MultiLineLabel(message);
 		if (font!=null)
 			label.setFont(font);
-		else if (!IJ.isLinux())
+		else if (!OsChecker.isLinux())
 			label.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		Panel panel = new Panel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 15));
@@ -40,7 +42,7 @@ public class MessageDialog extends Dialog implements ActionListener, KeyListener
 		panel.setLayout(new FlowLayout());
 		panel.add(button);
 		add("South", panel);
-		if (ij.IJ.isMacintosh())
+		if (OsChecker.isMacintosh())
 			setResizable(false);
 		pack();
 		GUI.centerOnImageJScreen(this);

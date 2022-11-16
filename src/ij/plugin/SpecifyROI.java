@@ -5,6 +5,7 @@ import java.util.*;
 import ij.*;
 import ij.gui.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import ij.measure.Calibration;
 
@@ -149,7 +150,7 @@ public class SpecifyROI implements PlugIn, DialogListener {
 	}
 
 	public boolean dialogItemChanged(GenericDialog gd, AWTEvent e) {
-		if (IJ.isMacOSX()) IJ.wait(50);
+		if (OsChecker.isMacOSX()) IJ.wait(50);
 		Calibration cal = imp.getCalibration();
 		width = gd.getNextNumber();
 		height = gd.getNextNumber();

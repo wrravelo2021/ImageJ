@@ -6,6 +6,7 @@ import ij.*;
 import ij.gui.*;
 import ij.measure.*;
 import ij.plugin.frame.Recorder;
+import ij.util.OsChecker;
 
 /** This class converts an ImagePlus object to a different type. */
 public class ImageConverter {
@@ -211,7 +212,7 @@ public class ImageConverter {
 			cp.invert();
 		imp.setImage(cp.createImage());
 		imp.killStack();
-		if (IJ.isLinux())
+		if (OsChecker.isLinux())
 			imp.setTitle(imp.getTitle());
 	}
 
@@ -230,7 +231,7 @@ public class ImageConverter {
 		cp.setHSB(H, S, B);
 		imp.setImage(cp.createImage());
 		imp.killStack();
-		if (IJ.isLinux())
+		if (OsChecker.isLinux())
 			imp.setTitle(imp.getTitle());
 	}
 	
@@ -249,7 +250,7 @@ public class ImageConverter {
 		cp.setHSB(H, S, B);
 		imp.setImage(cp.createImage());
 		imp.killStack();
-		if (IJ.isLinux())
+		if (OsChecker.isLinux())
 			imp.setTitle(imp.getTitle());
 	}
 

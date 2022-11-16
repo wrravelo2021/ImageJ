@@ -3,6 +3,7 @@ import ij.*;
 import ij.process.*;
 import ij.gui.*;
 import ij.measure.*;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import java.awt.*;
 import java.awt.event.*;
@@ -665,7 +666,7 @@ public class Slicer implements PlugIn, TextListener, ItemListener {
 	}
 
 	public void itemStateChanged(ItemEvent e) {
-		if (IJ.isMacOSX()) IJ.wait(100);
+		if (OsChecker.isMacOSX()) IJ.wait(100);
 		Checkbox cb = (Checkbox)checkboxes.elementAt(2);
         nointerpolate = cb.getState();
         updateSize();

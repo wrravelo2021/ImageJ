@@ -3,6 +3,7 @@ import ij.*;
 import ij.gui.*;
 import ij.io.*;
 import ij.plugin.frame.Editor;
+import ij.util.JavaChecker;
 import ij.plugin.Macro_Runner;
 import ij.plugin.filter.PlugInFilter;
 import ij.plugin.filter.PlugInFilterRunner;
@@ -288,11 +289,11 @@ public class Compiler implements PlugIn, FilenameFilter {
 			target = TARGET19;
 		if (target<TARGET16)
 			target = TARGET16;
-		if (target>TARGET16 && IJ.javaVersion()<7)
+		if (target>TARGET16 && JavaChecker.javaVersion()<7)
 			target = TARGET16;
-		if (target>TARGET17 && IJ.javaVersion()<8)
+		if (target>TARGET17 && JavaChecker.javaVersion()<8)
 			target = TARGET17;
-		if (target>TARGET18 && IJ.javaVersion()<9)
+		if (target>TARGET18 && JavaChecker.javaVersion()<9)
 			target = TARGET18;
 		Prefs.set(TARGET_KEY, target);
 	}

@@ -2,6 +2,7 @@ package ij.plugin;
 import ij.*;
 import ij.process.*;
 import ij.gui.*;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import ij.io.*;
 import ij.macro.Interpreter;
@@ -339,7 +340,7 @@ import java.util.Vector;
 		if (code!=null) {
 			TextArea ta = gd.getTextArea1();
 			ta.insert(code, ta.getCaretPosition());
-			if (IJ.isMacOSX()) ta.requestFocus();
+			if (OsChecker.isMacOSX()) ta.requestFocus();
 		}
 	}
 

@@ -1,6 +1,7 @@
 package ij.plugin.frame;
 import ij.*;
 import ij.plugin.*;
+import ij.util.OsChecker;
 import ij.gui.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -68,7 +69,7 @@ public class Channels extends PlugInDialog implements PlugIn, ItemListener, Acti
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.CENTER;
 		int margin = 32;
-		if (IJ.isMacOSX())
+		if (OsChecker.isMacOSX())
 			margin = 20;
 		c.insets = new Insets(10, margin, 10, margin);
 		choice = new Choice();
@@ -98,14 +99,14 @@ public class Channels extends PlugInDialog implements PlugIn, ItemListener, Acti
 		c.gridwidth = 2;
 		c.gridy = y++;
 		Panel panel = new Panel();
-		int hgap = IJ.isMacOSX()?1:5;
+		int hgap = OsChecker.isMacOSX()?1:5;
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT,hgap,0));
-		helpButton = new TrimmedButton("Help",IJ.isMacOSX()?10:0);//new Button("Help");
+		helpButton = new TrimmedButton("Help",OsChecker.isMacOSX()?10:0);//new Button("Help");
 		helpButton.addActionListener(this);
 		helpButton.addKeyListener(ij);
 		panel.add(helpButton, c);
 		add(panel, c);
-		moreButton = new TrimmedButton(moreLabel,IJ.isMacOSX()?10:0);//new Button(moreLabel);
+		moreButton = new TrimmedButton(moreLabel,OsChecker.isMacOSX()?10:0);//new Button(moreLabel);
 		moreButton.addActionListener(this);
 		moreButton.addKeyListener(ij);
 		panel.add(moreButton, c);

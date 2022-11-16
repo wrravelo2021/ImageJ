@@ -3,6 +3,7 @@ import ij.*;
 import ij.io.*;
 import ij.gui.*;
 import ij.plugin.filter.Analyzer;
+import ij.util.OsChecker;
 import ij.macro.Interpreter;
 import ij.measure.ResultsTable;
 import java.awt.*;
@@ -78,13 +79,13 @@ public class TextWindow extends Frame implements ActionListener, FocusListener, 
 
 	private void create(String title, TextPanel textPanel, int width, int height) {
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
-		if (IJ.isLinux()) setBackground(ImageJ.backgroundColor);
+		if (OsChecker.isLinux()) setBackground(ImageJ.backgroundColor);
 		add("Center", textPanel);
 		addKeyListener(textPanel);
 		ImageJ ij = IJ.getInstance();
 		if (ij!=null) {
 			textPanel.addKeyListener(ij);
-			if (!IJ.isMacOSX()) {
+			if (!OsChecker.isMacOSX()) {
 				Image img = ij.getIconImage();
 				if (img!=null)
 					try {setIconImage(img);} catch (Exception e) {}
@@ -170,7 +171,7 @@ public class TextWindow extends Frame implements ActionListener, FocusListener, 
 		m.add(new MenuItem("Make Text Smaller"));
 		m.add(new MenuItem("Make Text Larger"));
 		m.addSeparator();
-		antialiased = new CheckboxMenuItem("Antialiased", Prefs.get(FONT_ANTI, IJ.isMacOSX()?true:false));
+		antialiased = new CheckboxMenuItem("Antialiased", Prefs.get(FONT_ANTI, OsChecker.isMacOSX()?true:false));
 		antialiased.addItemListener(this);
 		m.add(antialiased);
 		m.add(new MenuItem("Save Settings"));

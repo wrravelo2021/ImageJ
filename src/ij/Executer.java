@@ -1,4 +1,5 @@
 package ij;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import ij.text.TextWindow;
 import ij.plugin.MacroInstaller;
@@ -86,7 +87,7 @@ public class Executer implements Runnable {
 				PrintWriter pw = new PrintWriter(caw);
 				e.printStackTrace(pw);
 				String s = caw.toString();
-				if (IJ.isMacintosh()) {
+				if (OsChecker.isMacintosh()) {
 					if (s.indexOf("ThreadDeath")>0)
 						return;
 					s = Tools.fixNewLines(s);

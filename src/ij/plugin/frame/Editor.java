@@ -6,6 +6,8 @@ import java.util.*;
 import java.awt.datatransfer.*;																																																																																													
 import ij.*;
 import ij.gui.*;
+import ij.util.JavaChecker;
+import ij.util.OsChecker;
 import ij.util.Tools;
 import ij.text.*;
 import ij.macro.*;
@@ -153,14 +155,14 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		ta = new TextArea(rows, columns);
 		ta.addTextListener(this);
 		ta.addKeyListener(this);
-		if (IJ.isLinux()) ta.setBackground(Color.white);
+		if (OsChecker.isLinux()) ta.setBackground(Color.white);
  		addKeyListener(IJ.getInstance());  // ImageJ handles keyboard shortcuts
 		ta.addMouseListener(this);  // ImageJ handles keyboard shortcuts
 		add(ta);
 		pack();
 		setFont();
 		positionWindow();
-		if (!IJ.isJava18() && !IJ.isLinux())
+		if (!JavaChecker.isJava18() && !OsChecker.isLinux())
 			insertSpaces = false;
 	}
 	
@@ -192,23 +194,23 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		
 		m = new Menu("Edit");
 		MenuItem item = null;
-		if (IJ.isWindows())
+		if (OsChecker.isWindows())
 			item = new MenuItem("Undo  Ctrl+Z");
 		else
 			item = new MenuItem("Undo",new MenuShortcut(KeyEvent.VK_Z));		
 		m.add(item);
 		m.addSeparator();		
-		if (IJ.isWindows())
+		if (OsChecker.isWindows())
 			item = new MenuItem("Cut  Ctrl+X");
 		else
 			item = new MenuItem("Cut",new MenuShortcut(KeyEvent.VK_X));
 		m.add(item);
-		if (IJ.isWindows())
+		if (OsChecker.isWindows())
 			item = new MenuItem("Copy  Ctrl+C");
 		else
 			item = new MenuItem("Copy", new MenuShortcut(KeyEvent.VK_C));
 		m.add(item);
-		if (IJ.isWindows())
+		if (OsChecker.isWindows())
 			item = new MenuItem("Paste  Ctrl+V");
 		else
 			item = new MenuItem("Paste",new MenuShortcut(KeyEvent.VK_V));
@@ -255,8 +257,8 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		if (window.width==0)
 			return;
 		int left = screen.width/2-window.width/2;
-		int top = screen.height/(IJ.isWindows()?6:5);
-		if (IJ.isMacOSX())
+		int top = screen.height/(OsChecker.isWindows()?6:5);
+		if (OsChecker.isMacOSX())
 			top = (screen.height-window.height)/4;
 		if (top<0) top = 0;
 		if (nWindows<=0 || xoffset>8*XINC)
@@ -273,7 +275,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	
 	public void create(String name, String text) {
 		ta.append(text);
-		if (IJ.isMacOSX()) IJ.wait(25); // needed to get setCaretPosition() on OS X
+		if (OsChecker.isMacOSX()) IJ.wait(25); // needed to get setCaretPosition() on OS X
 		ta.setCaretPosition(0);
 		setWindowTitle(name);
 		boolean macroExtension = name.endsWith(".txt") || name.endsWith(".ijm");
@@ -526,18 +528,18 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		if (text.equals(""))
 			return;
 		boolean strictMode = false;
-		if (IJ.isJava18()) {
+		if (JavaChecker.isJava18()) {
 			// text.matches("^( |\t)*(\"use strict\"|'use strict')");
 			String text40 = text.substring(0,Math.min(40,text.length()));
 			strictMode =  text40.contains("'use strict'") || text40.contains("\"use strict\"");
 		}
 		text = getJSPrefix("") + text;
-		if (IJ.isJava18()) {
+		if (JavaChecker.isJava18()) {
 			text = "load(\"nashorn:mozilla_compat.js\");" + text;
 			if (strictMode)
 				text = "'use strict';" + text;
 		}
-		if (!(IJ.isMacOSX()&&!IJ.is64Bit())) {
+		if (!(OsChecker.isMacOSX()&&!OsChecker.is64Bit())) {
 			// Use JavaScript engine built into Java 6 and later.
 			IJ.runPlugIn("ij.plugin.JavaScriptEvaluator", text);
 		} else {
@@ -632,7 +634,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		
 		if (!(pg instanceof PrintGraphics))
 			throw new IllegalArgumentException ("Graphics contextt not PrintGraphics");
-		if (IJ.isMacintosh()) {
+		if (OsChecker.isMacintosh()) {
 			topMargin = 0;
 			leftMargin = 0;
 			bottomMargin = 0;
@@ -695,7 +697,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	}	   
 
 	void undo() {
-		if (IJ.isWindows()) {
+		if (OsChecker.isWindows()) {
 			IJ.showMessage("Editor", "Press Ctrl-Z to undo");
 			return;
 		}
@@ -729,7 +731,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 			int start = ta.getSelectionStart();
 			int end = ta.getSelectionEnd();
 			ta.replaceRange("", start-offset(start), end-offset(end-2>=start?end-2:start));
-			if (IJ.isMacOSX())
+			if (OsChecker.isMacOSX())
 				ta.setCaretPosition(start);
 		}	
 	}
@@ -763,14 +765,14 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		int start = ta.getSelectionStart( );
 		int end = ta.getSelectionEnd( );
 		ta.replaceRange(s, start-offset(start), end-offset(end-2>=start?end-2:start));
-		if (IJ.isMacOSX())
+		if (OsChecker.isMacOSX())
 			ta.setCaretPosition(start+s.length());
 		checkForCurlyQuotes = true;
 	}
 	
 	// workaround for TextArea.getCaretPosition() bug on Windows
 	private int offset(int pos) {
-		if (!IJ.isWindows())
+		if (!OsChecker.isWindows())
 			return 0;
 		String text = ta.getText();
 		int rcount = 0;
@@ -974,7 +976,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		int pos = ta.getCaretPosition();
 		int currentLine = 0;
 		String text = ta.getText();
-		if (IJ.isWindows())
+		if (OsChecker.isWindows())
 			text = text.replaceAll("\r\n", "\n");
 		char[] chars = new char[text.length()];
 		chars = text.toCharArray();
@@ -1035,9 +1037,9 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		if (isMacroWindow) return;
 		// first few textValueChanged events may be bogus
 		eventCount++;
-		if (eventCount>2 || !IJ.isMacOSX() && eventCount>1)
+		if (eventCount>2 || !OsChecker.isMacOSX() && eventCount>1)
 			changes = true;
-		if (IJ.isMacOSX()) // screen update bug work around
+		if (OsChecker.isMacOSX()) // screen update bug work around
 			ta.setCaretPosition(ta.getCaretPosition());
 	}
 	
@@ -1122,12 +1124,12 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 			ta.appendText("  Enter an expression (e.g., \"x/2\" or \"log(2)\") to evaluate it.\n");			
 			ta.appendText("  Move cursor to end of line and press 'enter' to repeat.\n");			
 			ta.appendText("  \"quit\" - exit interactive mode\n");			
-			ta.appendText("  "+(IJ.isMacOSX()?"cmd":"ctrl")+"+M - enter interactive mode\n");
+			ta.appendText("  "+(OsChecker.isMacOSX()?"cmd":"ctrl")+"+M - enter interactive mode\n");
 			if (isScript) {	
 				ta.appendText("  \"macro\" - switch language to macro\n");
 				ta.appendText("  \"examples\" - show JavaScript examples\n");	
 			} else {
-				ta.appendText("  "+(IJ.isMacOSX()?"cmd":"ctrl")+"+shift+F - open Function Finder\n");	
+				ta.appendText("  "+(OsChecker.isMacOSX()?"cmd":"ctrl")+"+shift+F - open Function Finder\n");	
 				ta.appendText("  \"js\" - switch language to JavaScript\n");	
 			}
 		} else if (isScript && code.length()==9 && code.contains("examples")) {
@@ -1686,7 +1688,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		toFront();
 		previousLine = n;
 		String text = ta.getText();
-		if (IJ.isWindows())
+		if (OsChecker.isWindows())
 			text = text.replaceAll("\r\n", "\n");
 		char[] chars = new char[text.length()];
 		chars = text.toCharArray();
@@ -1742,7 +1744,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	
 	/** Changes Windows (CRLF) line separators to line feeds (LF). */
 	public void fixLineEndings() {
-		if (!IJ.isWindows())
+		if (!OsChecker.isWindows())
 			return;
 		String text = ta.getText();
 		text = text.replaceAll("\r\n", "\n");

@@ -1,6 +1,7 @@
 package ij.plugin.frame;
 import ij.*;
 import ij.process.*;
+import ij.util.OsChecker;
 import ij.gui.*;
 import java.awt.*;
 import java.awt.image.*;
@@ -144,7 +145,7 @@ public class ColorThresholder extends PlugInFrame implements PlugIn, Measurement
 		c.gridx = 0;
 		c.gridy = y++;
 		c.gridwidth = 1;
-		c.weightx = IJ.isMacintosh()?90:100;
+		c.weightx = OsChecker.isMacintosh()?90:100;
 		c.fill = c.HORIZONTAL;
 		c.insets = new Insets(5, 5, 0, 0);
 
@@ -155,7 +156,7 @@ public class ColorThresholder extends PlugInFrame implements PlugIn, Measurement
 		// minHue slider label
 		c.gridx = 1;
 		c.gridwidth = 1;
-		c.weightx = IJ.isMacintosh()?10:0;
+		c.weightx = OsChecker.isMacintosh()?10:0;
 		c.insets = new Insets(5, 0, 0, 0);
 		label1 = new Label("       ", Label.LEFT);
 		label1.setFont(font);
@@ -217,7 +218,7 @@ public class ColorThresholder extends PlugInFrame implements PlugIn, Measurement
 		c.gridx = 0;
 		c.gridy = y++;
 		c.gridwidth = 1;
-		c.weightx = IJ.isMacintosh()?90:100;
+		c.weightx = OsChecker.isMacintosh()?90:100;
 		c.fill = c.HORIZONTAL;
 		c.insets = new Insets(5, 5, 0, 0);
 		add(minSlider2, c);
@@ -227,7 +228,7 @@ public class ColorThresholder extends PlugInFrame implements PlugIn, Measurement
 		// minSat slider label
 		c.gridx = 1;
 		c.gridwidth = 1;
-		c.weightx = IJ.isMacintosh()?10:0;
+		c.weightx = OsChecker.isMacintosh()?10:0;
 		c.insets = new Insets(5, 0, 0, 0);
 		label3 = new Label("       ", Label.LEFT);
 		label3.setFont(font);
@@ -287,7 +288,7 @@ public class ColorThresholder extends PlugInFrame implements PlugIn, Measurement
 		c.gridx = 0;
 		c.gridy = y++;
 		c.gridwidth = 1;
-		c.weightx = IJ.isMacintosh()?90:100;
+		c.weightx = OsChecker.isMacintosh()?90:100;
 		c.fill = c.HORIZONTAL;
 		c.insets = new Insets(5, 5, 0, 0);
 		add(minSlider3, c);
@@ -297,7 +298,7 @@ public class ColorThresholder extends PlugInFrame implements PlugIn, Measurement
 		// minBri slider label
 		c.gridx = 1;
 		c.gridwidth = 1;
-		c.weightx = IJ.isMacintosh()?10:0;
+		c.weightx = OsChecker.isMacintosh()?10:0;
 		c.insets = new Insets(5, 0, 0, 0);
 		label5 = new Label("       ", Label.LEFT);
 		label5.setFont(font);
@@ -406,7 +407,7 @@ public class ColorThresholder extends PlugInFrame implements PlugIn, Measurement
 		add(panelt, c);
 
 		// buttons
-		int trim = IJ.isMacOSX()?10:0;
+		int trim = OsChecker.isMacOSX()?10:0;
 		panel = new Panel();
 		panel.setLayout(new GridLayout(0, 4, 0, 0));
 		originalB = new TrimmedButton("Original", trim);

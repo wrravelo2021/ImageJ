@@ -15,6 +15,7 @@ import ij.plugin.frame.*;
 import ij.plugin.MacroInstaller;
 import ij.plugin.RectToolOptions;
 import ij.plugin.tool.PlugInTool;
+import ij.util.OsChecker;
 import ij.plugin.tool.MacroToolRunner;
 import ij.macro.Program;
 
@@ -310,7 +311,7 @@ public class Toolbar extends Canvas implements MouseListener, MouseMotionListene
 	private void setStrokeWidth(Graphics2D g2d) {
 		if (scale==1) {
 			if (dscale>1.0)
-				g2d.setStroke(new BasicStroke(IJ.isMacOSX()?1.4f:1.25f));
+				g2d.setStroke(new BasicStroke(OsChecker.isMacOSX()?1.4f:1.25f));
 		} else
 			g2d.setStroke(new BasicStroke(scale));
 	}
@@ -699,7 +700,7 @@ public class Toolbar extends Canvas implements MouseListener, MouseMotionListene
 				IJ.showStatus("Angle tool");
 				return;
 			default:
-				IJ.showStatus("ImageJ "+IJ.getVersion()+" / Java "+System.getProperty("java.version")+(IJ.is64Bit()?" (64-bit)":" (32-bit)"));
+				IJ.showStatus("ImageJ "+IJ.getVersion()+" / Java "+System.getProperty("java.version")+(OsChecker.is64Bit()?" (64-bit)":" (32-bit)"));
 				return;
 		}
 	}
@@ -1161,7 +1162,7 @@ public class Toolbar extends Canvas implements MouseListener, MouseMotionListene
 			rectItem.setState(rectType==RECT_ROI);	
 			roundRectItem.setState(rectType==ROUNDED_RECT_ROI);	
 			rotatedRectItem.setState(rectType==ROTATED_RECT_ROI);	
-			if (IJ.isMacOSX()) IJ.wait(10);	
+			if (OsChecker.isMacOSX()) IJ.wait(10);	
 			rectPopup.show(e.getComponent(),x,y);	
 			mouseDownTime = 0L;	
 		}	
@@ -1169,14 +1170,14 @@ public class Toolbar extends Canvas implements MouseListener, MouseMotionListene
 			ovalItem.setState(ovalType==OVAL_ROI);	
 			ellipseItem.setState(ovalType==ELLIPSE_ROI);	
 			brushItem.setState(ovalType==BRUSH_ROI);	
-			if (IJ.isMacOSX()) IJ.wait(10);	
+			if (OsChecker.isMacOSX()) IJ.wait(10);	
 			ovalPopup.show(e.getComponent(),x,y);	
 			mouseDownTime = 0L;	
 		}	
 		if (current==POINT && isRightClick) {	
 			pointItem.setState(!multiPointMode);	
 			multiPointItem.setState(multiPointMode);	
-			if (IJ.isMacOSX()) IJ.wait(10);	
+			if (OsChecker.isMacOSX()) IJ.wait(10);	
 			pointPopup.show(e.getComponent(),x,y);	
 			mouseDownTime = 0L;	
 		}	
@@ -1185,7 +1186,7 @@ public class Toolbar extends Canvas implements MouseListener, MouseMotionListene
 			polyLineItem.setState(lineType==POLYLINE);	
 			freeLineItem.setState(lineType==FREELINE);	
 			arrowItem.setState(lineType==LINE&&arrowMode);	
-			if (IJ.isMacOSX()) IJ.wait(10);	
+			if (OsChecker.isMacOSX()) IJ.wait(10);	
 			linePopup.show(e.getComponent(),x,y);	
 			mouseDownTime = 0L;	
 		}
@@ -1223,7 +1224,7 @@ public class Toolbar extends Canvas implements MouseListener, MouseMotionListene
 			return;
 		}
 		int flags = e.getModifiers();
-		boolean isRightClick = e.isPopupTrigger()||(!IJ.isMacintosh()&&(flags&Event.META_MASK)!=0);
+		boolean isRightClick = e.isPopupTrigger()||(!OsChecker.isMacintosh()&&(flags&Event.META_MASK)!=0);
 		boolean doubleClick = newTool==current && (System.currentTimeMillis()-mouseDownTime)<=DOUBLE_CLICK_THRESHOLD;
  		mouseDownTime = System.currentTimeMillis();
 		if (!doubleClick || isRightClick) {
@@ -1349,7 +1350,7 @@ public class Toolbar extends Canvas implements MouseListener, MouseMotionListene
 		addItem("Remove Custom Tools");
 		addItem("Help...");
 		add(ovalPopup);
-		if (IJ.isMacOSX()) IJ.wait(10);
+		if (OsChecker.isMacOSX()) IJ.wait(10);
 		switchPopup.show(e.getComponent(), e.getX(), e.getY());
 	}
 
