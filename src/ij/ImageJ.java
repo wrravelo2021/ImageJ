@@ -117,7 +117,6 @@ public class ImageJ extends Frame implements ActionListener,
 	private boolean quitMacro;
 	private long keyPressedTime, actionPerformedTime;
 	private String lastKeyCommand;
-	private boolean isEmbedded; // TODO is unused
 	private boolean windowClosed;
 	private static String commandName;
 	private static boolean batchMode;
@@ -153,7 +152,6 @@ public class ImageJ extends Frame implements ActionListener,
 			useExceptionHandler = true;
 		}
 		if (IJ.debugMode) IJ.log("ImageJ starting in debug mode: "+mode);
-		isEmbedded = applet==null && (mode==EMBEDDED||mode==NO_SHOW);
 		this.applet = applet;
 		String err1 = Prefs.load(this, applet);
 		setBackground(backgroundColor);
