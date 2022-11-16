@@ -1977,6 +1977,8 @@ public class IJ {
 		if (debugMode) log("OpenUrlAsString: "+url);
 		StringBuffer sb = null;
 		url = url.replaceAll(" ", "%20");
+		InputStream in = null;
+		BufferedReader br = null;
 		try {
 			//if (url.contains("nih.gov")) addRootCA();
 			URL u = new URL(url);
@@ -1984,8 +1986,8 @@ public class IJ {
 			long len = uc.getContentLength();
 			if (len>5242880L)
 				return "<Error: file is larger than 5MB>";
-			InputStream in = u.openStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(in,"UTF-8"));
+			in = u.openStream();
+			br = new BufferedReader(new InputStreamReader(in,"UTF-8"));
 			sb = new StringBuffer() ;
 			String line;
 			while ((line=br.readLine()) != null)
@@ -1993,6 +1995,13 @@ public class IJ {
 			in.close ();
 		} catch (Exception e) {
 			return("<Error: "+e+">");
+		} finally {
+			try {
+				in.close();
+				br.close();
+			} catch (Exception e) {
+				return("<Error: "+e+">");
+			}
 		}
 		if (sb!=null)
 			return new String(sb);
