@@ -1975,11 +1975,8 @@ public class IJ {
 		//if (!trustManagerCreated && url.contains("nih.gov")) trustAllCerts();
 		url = Opener.updateUrl(url);
 		if (debugMode) log("OpenUrlAsString: "+url);
-		StringBuffer sb = null;
 		url = url.replaceAll(" ", "%20");
-		InputStream in = null;
-		BufferedReader br = null;
-		InputStreamReader inr = null;
+		StringBuffer sb = null;
 		try {
 			//if (url.contains("nih.gov")) addRootCA();
 			URL u = new URL(url);
@@ -1987,16 +1984,17 @@ public class IJ {
 			long len = uc.getContentLength();
 			if (len>5242880L)
 				return "<Error: file is larger than 5MB>";
-			in = u.openStream();
-			inr = new InputStreamReader(in,"UTF-8");
-			br = new BufferedReader(inr);
-			sb = new StringBuffer() ;
-			String line;
-			while ((line=br.readLine()) != null)
-				sb.append (line + "\n");
-			in.close ();
-			br.close();	
-			inr.close();
+			try(
+			  InputStream in = u.openStream();
+			  InputStreamReader inr = new InputStreamReader(in,"UTF-8");
+			  BufferedReader br = new BufferedReader(inr);
+			) {
+				sb = new StringBuffer();
+				String line;
+				while ((line=br.readLine()) != null)
+					sb.append (line + "\n");
+			} catch(Exception e) {
+			}
 		} catch (Exception e) {
 			return("<Error: "+e+">");
 		}
