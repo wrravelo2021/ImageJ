@@ -743,26 +743,4 @@ public class CompositeImage extends ImagePlus {
 			channelLuts = null;
 		}
 	}
-
-	/** Deprecated */
-	public synchronized void setChannelsUpdated() {
-		if (cip!=null) {
-			for (int i=0; i<cip.length; i++) {
-				if (cip[i]!=null) cip[i].setPixels(null);
-				cip[i] = null;
-			}
-		}
-		cip = null;
-		lut = null;
-		img = null;
-		currentChannel = -1;
-		previousChannel = 0;
-		currentCompositeSlice = currentFrame = 1;
-		singleChannel = false;
-		rgbPixels = null;
-		awtImage = null;
-		channelLuts = null;
-		boolean[] active = new boolean[MAX_CHANNELS];
-	}
-
 }

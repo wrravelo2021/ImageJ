@@ -502,21 +502,6 @@ public class IJ {
 			ij.getStatusBar().setBackground(ij.backgroundColor);
 		}
 	}
-	
-	/**
-	* @deprecated
-	* replaced by IJ.log(), ResultsTable.setResult() and TextWindow.append().
-	* There are examples at
-	*   http://imagej.nih.gov/ij/plugins/sine-cosine.html
-	*/
-	public static void write(String s) {
-		if (textPanel==null && ij!=null)
-			showResults();
-		if (textPanel!=null)
-				textPanel.append(s);
-		else
-			System.out.println(s);
-	}
 
 	private static void showResults() {
 		TextWindow resultsWindow = new TextWindow("Results", "", 400, 250);

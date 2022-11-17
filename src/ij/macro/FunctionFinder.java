@@ -92,10 +92,6 @@ public class FunctionFinder implements TextListener,  WindowListener, KeyListene
 		dialog.toFront();
 	}
 
-	public FunctionFinder() {
-		this(null);
-	}
-
 	public void populateList(String matchingSubstring) {
 		String substring = matchingSubstring.toLowerCase();
 		functions.removeAll();

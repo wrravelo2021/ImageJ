@@ -856,8 +856,7 @@ public class Analyzer implements PlugInFilter, Measurements {
 		if (!resultsUpdated && counter>1 && rt.getColumnIndex("Group")>=0 && rt.getValue("Group",counter-1)>0) {
 			rt.show("Results");
 			resultsUpdated = true;
-		} else
-			IJ.write(rt.getRowAsString(counter-1));
+		}
 	}
 
 	/** Redisplays the results table. */
