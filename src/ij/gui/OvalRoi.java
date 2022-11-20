@@ -92,61 +92,7 @@ public class OvalRoi extends Roi {
 			case 7: x=ox; break;
 		}
 		//if (x<0) x=0; if (y<0) y=0;
-		if (x<x2)
-		   width=x2-x;
-		else
-		  {width=1; x=x2;}
-		if (y<y2)
-		   height = y2-y;
-		else
-		   {height=1; y=y2;}
-		if (center) {
-			switch(activeHandle){
-				case 0:
-					width=(xc-x)*2;
-					height=(yc-y)*2;
-					break;
-				case 1:
-					height=(yc-y)*2;
-					break;
-				case 2:
-					width=(x2-xc)*2;
-					x=x2-width;
-					height=(yc-y)*2;
-					break;
-				case 3:
-					width=(x2-xc)*2;
-					x=x2-width;
-					break;
-				case 4:
-					width=(x2-xc)*2;
-					x=x2-width;
-					height=(y2-yc)*2;
-					y=y2-height;
-					break;
-				case 5:
-					height=(y2-yc)*2;
-					y=y2-height;
-					break;
-				case 6:
-					width=(xc-x)*2;
-					height=(y2-yc)*2;
-					y=y2-height;
-					break;
-				case 7:
-					width=(xc-x)*2;
-					break;
-			}
-			if (x>=x2) {
-				width=1;
-				x=x2=xc;
-			}
-			if (y>=y2) {
-				height=1;
-				y=y2=yc;
-			}
-
-		}
+		hereda1(x2, y2, xc, yc);
 
 		if (constrain) {
 			if (activeHandle==1 || activeHandle==5) width=height;
