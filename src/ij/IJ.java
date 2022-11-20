@@ -1869,7 +1869,7 @@ public class IJ {
 		String newSb = "";
 		if (debugMode) log("OpenUrlAsString: "+url);
 		url = url.replaceAll(" ", "%20");
-		StringBuffer sb = null;
+		
 		try {
 			//if (url.contains("nih.gov")) addRootCA();
 			URL u = new URL(url);
@@ -1877,18 +1877,19 @@ public class IJ {
 			long len = uc.getContentLength();
 			if (len>5242880L)
 				return "<Error: file is larger than 5MB>"; 
-			newSb = tryCOpenUrlAsString(sb, u);
+			newSb = tryCOpenUrlAsString(u);
 		} catch (Exception e) {
 			return("<Error: "+e+">");
 		}
 		
-		if (newSb!="")
+		if (newSb.equals(""))
 			return newSb;
 		else
 			return "";
 	}
 	
-	public static String tryCOpenUrlAsString(StringBuffer sb, URL u) {
+	public static String tryCOpenUrlAsString(URL u) {
+		StringBuffer sb = null;
 		try(
 			  InputStream in = u.openStream();
 			  InputStreamReader inr = new InputStreamReader(in,StandardCharsets.UTF_8);
