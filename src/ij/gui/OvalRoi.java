@@ -93,43 +93,8 @@ public class OvalRoi extends Roi {
 		}
 		//if (x<0) x=0; if (y<0) y=0;
 		hereda1(x2, y2, xc, yc);
-
-		if (constrain) {
-			if (activeHandle==1 || activeHandle==5) width=height;
-			else height=width;
-			
-			if (x>=x2) {
-				width=1;
-				x=x2=xc;
-			}
-			if (y>=y2) {
-				height=1;
-				y=y2=yc;
-			}
-			clon32(x2, y2, xc, yc);
-
-		}
-
-		if (aspect && !constrain) {
-			if (activeHandle==1 || activeHandle==5) width=(int)Math.rint((double)height*asp);
-			else height=(int)Math.rint((double)width/asp);
-
-			clon32(x2, y2, xc, yc);
-			// Attempt to preserve aspect ratio when roi very small:
-			if (width<8) {
-				if (width<1) width = 1;
-				height=(int)Math.rint((double)width/asp_bk);
-			}
-			if (height<8) {
-				if (height<1) height =1;
-				width=(int)Math.rint((double)height*asp_bk);
-			}
-		}
-
-		updateClipRect();
-		imp.draw(clipX, clipY, clipWidth, clipHeight);
-		oldX=x; oldY=y;
-		oldWidth=width; oldHeight=height;
+		hereda2(x2, y2, xc, yc, asp);
+		
 		cachedMask = null;
 		bounds = null;
 	}
