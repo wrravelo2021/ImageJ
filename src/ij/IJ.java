@@ -79,8 +79,6 @@ public class IJ {
 	private static Interpreter macroInterpreter;
 	private static boolean protectStatusBar;
 	private static Thread statusBarThread;
-	private static StringBuffer sb = null;
-
 			
 	static {
 		dfs = new DecimalFormatSymbols(Locale.US);
@@ -1868,25 +1866,30 @@ public class IJ {
 	public static String openUrlAsString(String url) {
 		//if (!trustManagerCreated && url.contains("nih.gov")) trustAllCerts();
 		url = Opener.updateUrl(url);
+		String newSb = "";
 		if (debugMode) log("OpenUrlAsString: "+url);
 		url = url.replaceAll(" ", "%20");
-		String mensajeSalida = tryCOpenUrlAsString(url);
-
-		if (sb!=null)
-			return new String(sb);
-		else
-			return mensajeSalida;
-	}
-	
-	public static String tryCOpenUrlAsString(String url) {
+		StringBuffer sb = null;
 		try {
 			//if (url.contains("nih.gov")) addRootCA();
 			URL u = new URL(url);
 			URLConnection uc = u.openConnection();
 			long len = uc.getContentLength();
 			if (len>5242880L)
-				return "<Error: file is larger than 5MB>";
-			try(
+				return "<Error: file is larger than 5MB>"; 
+			newSb = tryCOpenUrlAsString(sb, u);
+		} catch (Exception e) {
+			return("<Error: "+e+">");
+		}
+		
+		if (newSb!="")
+			return newSb;
+		else
+			return "";
+	}
+	
+	public static String tryCOpenUrlAsString(StringBuffer sb, URL u) {
+		try(
 			  InputStream in = u.openStream();
 			  InputStreamReader inr = new InputStreamReader(in,StandardCharsets.UTF_8);
 			  BufferedReader br = new BufferedReader(inr);
@@ -1895,11 +1898,10 @@ public class IJ {
 				String line;
 				while ((line=br.readLine()) != null)
 					sb.append (line + "\n");
-			} 
-			} catch (Exception e) {
+			}catch (Exception e) {
 				return("<Error: "+e+">");
 			}
-		return new String(sb);
+			return new String(sb);
 	}
 	
 	/* 
