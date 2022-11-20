@@ -79,9 +79,10 @@ public class IJ {
 	private static Interpreter macroInterpreter;
 	private static boolean protectStatusBar;
 	private static Thread statusBarThread;
+	private static StringBuffer sb = null;
+
 			
 	static {
-		String version = System.getProperty("java.version");
 		dfs = new DecimalFormatSymbols(Locale.US);
 		df = new DecimalFormat[10];
 		df[0] = new DecimalFormat("0", dfs);
@@ -1869,7 +1870,15 @@ public class IJ {
 		url = Opener.updateUrl(url);
 		if (debugMode) log("OpenUrlAsString: "+url);
 		url = url.replaceAll(" ", "%20");
-		StringBuffer sb = null;
+		String mensajeSalida = tryCOpenUrlAsString(url);
+
+		if (sb!=null)
+			return new String(sb);
+		else
+			return mensajeSalida;
+	}
+	
+	public static String tryCOpenUrlAsString(String url) {
 		try {
 			//if (url.contains("nih.gov")) addRootCA();
 			URL u = new URL(url);
@@ -1891,10 +1900,7 @@ public class IJ {
 		} catch (Exception e) {
 			return("<Error: "+e+">");
 		}
-		if (sb!=null)
-			return new String(sb);
-		else
-			return "";
+		return new String(sb);
 	}
 	
 	/* 
