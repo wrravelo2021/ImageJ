@@ -511,7 +511,7 @@ public class FileOpener {
 	}
 
 	/** Returns an InputStream for the image described by this FileInfo. */
-	public InputStream createInputStream(FileInfo fi) throws IOException, MalformedURLException {
+	public InputStream createInputStream(FileInfo fi) throws IOException, MalformedURLException, NullPointerException {
 		InputStream is = null;
 		String canonicalDestinationPath = null;
 		boolean gzip = fi.fileName!=null && (fi.fileName.endsWith(".gz")||fi.fileName.endsWith(".GZ"));
