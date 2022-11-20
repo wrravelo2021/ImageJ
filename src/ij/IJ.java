@@ -1895,11 +1895,10 @@ public class IJ {
 				String line;
 				while ((line=br.readLine()) != null)
 					sb.append (line + "\n");
-			} catch(Exception e) {
+			} 
+			} catch (Exception e) {
+				return("<Error: "+e+">");
 			}
-		} catch (Exception e) {
-			return("<Error: "+e+">");
-		}
 		return new String(sb);
 	}
 	
