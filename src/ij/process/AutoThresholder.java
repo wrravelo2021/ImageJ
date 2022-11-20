@@ -813,7 +813,9 @@ public class AutoThresholder {
 			total+=data[ih];
 
 		for (ih = 0; ih < 256; ih++ )
-			norm_histo[ih] = data[ih]/total;
+			if (total != 0) {
+				norm_histo[ih] = data[ih]/total;
+			}
 
 		P1[0]=norm_histo[0];
 		P2[0]=1.0-P1[0];
