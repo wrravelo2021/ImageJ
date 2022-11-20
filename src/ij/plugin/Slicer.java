@@ -49,6 +49,12 @@ public class Slicer implements PlugIn, TextListener, ItemListener {
 	private double[] segmentLengths;
 	private double[] dx;
 	private double[] dy;
+	private int t1 = imp.getFrame();
+	private int width = imp.getWidth();
+	private int height = imp.getHeight();
+	ImagePlus imp2 = null;
+	ImageStack stack2 = null;
+	Roi roi = imp.getRoi();
 
 	public void run(String arg) {
 		imp = WindowManager.getCurrentImage();
@@ -180,12 +186,6 @@ public class Slicer implements PlugIn, TextListener, ItemListener {
 			return resliceTimeLapseHyperstack(imp);
 		int c1 = imp.getChannel();
 		int z1 = imp.getSlice();
-		int t1 = imp.getFrame();
-		int width = imp.getWidth();
-		int height = imp.getHeight();
-		ImagePlus imp2 = null;
-		ImageStack stack2 = null;
-		Roi roi = imp.getRoi();
 		for (int t=1; t<=frames; t++) {
 			for (int c=1; c<=channels; c++) {
 				ImageStack tmp1Stack = new ImageStack(width, height);
@@ -222,12 +222,6 @@ public class Slicer implements PlugIn, TextListener, ItemListener {
 		int channels = imp.getNChannels();
 		int frames = imp.getNFrames();
 		int c1 = imp.getChannel();
-		int t1 = imp.getFrame();
-		int width = imp.getWidth();
-		int height = imp.getHeight();
-		ImagePlus imp2 = null;
-		ImageStack stack2 = null;
-		Roi roi = imp.getRoi();
 		int z = 1;
 		for (int c=1; c<=channels; c++) {
 			ImageStack tmp1Stack = new ImageStack(width, height);
@@ -426,9 +420,7 @@ public class Slicer implements PlugIn, TextListener, ItemListener {
 		 }
 		 boolean virtualStack = imp.getStack().isVirtual();
 		 String status = null;
-		 ImagePlus imp2 = null;
 		 ImageStack stack2 = null;
-		 boolean isStack = imp.getStackSize()>1;
 		 IJ.resetEscape();
 		 boolean macro = IJ.isMacro();
 		 for (int i=0; i<outputSlices; i++)	{
@@ -536,7 +528,6 @@ public class Slicer implements PlugIn, TextListener, ItemListener {
 		 double leftOver = 1.0;
 		 double distance = 0.0;
 		 int index;
-		 double oldx=xbase, oldy=ybase;
 		 for (int i=0; i<n; i++) {
 				double len = segmentLengths[i];
 				if (len==0.0)

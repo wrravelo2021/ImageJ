@@ -513,6 +513,7 @@ public class FileOpener {
 	/** Returns an InputStream for the image described by this FileInfo. */
 	public InputStream createInputStream(FileInfo fi) throws IOException, MalformedURLException {
 		InputStream is = null;
+		String canonicalDestinationPath = null;
 		boolean gzip = fi.fileName!=null && (fi.fileName.endsWith(".gz")||fi.fileName.endsWith(".GZ"));
 		if (fi.inputStream!=null)
 			is = fi.inputStream;
@@ -526,7 +527,14 @@ public class FileOpener {
 		    if (f==null || !f.exists() || f.isDirectory() || !validateFileInfo(f, fi))
 		    	is = null;
 		    else
-				is = new FileInputStream(f);
+		        canonicalDestinationPath = f.getCanonicalPath();
+
+		        if (!canonicalDestinationPath.startsWith(fi.getFilePath())) {
+		        	throw new IOException("Entry is outside of the target directory");
+		        } else {
+		        	is = new FileInputStream(f);
+		        }
+		        	
 		}
 		if (is!=null) {
 			if (fi.compression>=FileInfo.LZW)
