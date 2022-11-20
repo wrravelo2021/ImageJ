@@ -6,7 +6,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 public class OsChecker {
-	private static boolean isMac, isWin, isLinux, is64Bit;
+	private static boolean isMac, isWin, isLinux;
 	private static String osname, osarch; // TODO not used
 
 	static {
